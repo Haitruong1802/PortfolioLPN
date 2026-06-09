@@ -36,26 +36,49 @@ export function TypingText({
     setDone(false);
 
     let cancelled = false;
+    let rafId = 0;
+    let starter = 0;
     let i = 0;
+    let lastTime = 0;
+    let elapsed = 0;
 
-    const tick = () => {
+    // requestAnimationFrame loop with elapsed-time accounting. setTimeout
+    // is throttled to ~4ms minimum on mobile and accumulates drift, which
+    // showed up as a visible stutter mid-tagline when other work (preloader
+    // exit, image decode, etc.) hogged the main thread. rAF syncs to the
+    // display refresh and pauses naturally when the tab is busy, then
+    // resumes without skipping characters.
+    const frame = (now: number) => {
       if (cancelled) return;
       if (i >= text.length) {
         setDone(true);
         return;
       }
+      if (lastTime === 0) lastTime = now;
+      elapsed += now - lastTime;
+      lastTime = now;
+
       const ch = text[i];
-      setDisplayed(text.slice(0, i + 1));
-      i++;
-      // Pause slightly on punctuation for natural rhythm
-      const delay = /[.!?,—…]/.test(ch) ? speed * 4 : speed;
-      window.setTimeout(tick, delay);
+      const charDelay = /[.!?,—…]/.test(ch) ? speed * 4 : speed;
+
+      if (elapsed >= charDelay) {
+        elapsed -= charDelay;
+        i++;
+        setDisplayed(text.slice(0, i));
+      }
+      rafId = window.requestAnimationFrame(frame);
     };
 
-    const starter = window.setTimeout(tick, startDelay);
+    starter = window.setTimeout(() => {
+      lastTime = 0;
+      elapsed = 0;
+      rafId = window.requestAnimationFrame(frame);
+    }, startDelay);
+
     return () => {
       cancelled = true;
       window.clearTimeout(starter);
+      window.cancelAnimationFrame(rafId);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [retypeOnChange ? text : null, speed, startDelay]);
