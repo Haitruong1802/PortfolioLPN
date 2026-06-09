@@ -330,12 +330,17 @@ export function Preloader() {
                   00
                 </span>
                 <div className="h-[2px] w-56 overflow-hidden rounded-full bg-white/10">
+                  {/* Plain <div> with a CSS width transition. Tried scaleX +
+                      transform earlier - the user reported the bar showed
+                      either nothing or a full-width gradient with no growth.
+                      Animating `width` here is cheap for a 2px-tall bar and
+                      avoids any interaction with MotionConfig reducedMotion=
+                      'always', which would otherwise snap a motion.div /
+                      transform animation straight to its end frame on mobile. */}
                   <div
-                    className="h-full origin-left"
+                    className="preloader-bar h-full"
                     style={{
-                      width: "100%",
-                      transform: `scaleX(${Math.max(0.02, progress)})`,
-                      transition: "transform 0.3s ease-out",
+                      width: `${Math.max(2, Math.round(progress * 100))}%`,
                       background:
                         "linear-gradient(to right, #ff7a1a, #ffffff, #2f7dff)",
                       boxShadow: "0 0 14px rgba(255,122,26,0.9)",
@@ -381,6 +386,9 @@ export function Preloader() {
           )}
 
           <style jsx>{`
+            .preloader-bar {
+              transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
             .collapse-star {
               position: absolute;
               top: 50%;
