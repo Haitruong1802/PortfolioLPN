@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 const SECTIONS = [
   { id: "top", label: { vi: "Hero", en: "Hero" } },
-  { id: "about", label: { vi: "Về Nam", en: "About" } },
+  { id: "about", label: { vi: "Giới thiệu", en: "About" } },
   { id: "process", label: { vi: "Kinh nghiệm", en: "Experience" } },
   { id: "services", label: { vi: "Skills", en: "Skills" } },
   { id: "work", label: { vi: "Thành tích", en: "Wins" } },

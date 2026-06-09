@@ -28,7 +28,7 @@ export function About() {
     >
       <SectionSpotlight number="01" align="right" />
       <AnimatedEyebrow color="text-brand-orange">
-        {locale === "vi" ? "Về Nam" : "About me"}
+        {locale === "vi" ? "Giới thiệu" : "About me"}
       </AnimatedEyebrow>
 
       {/* ─── 1. DNA STRIP — 5 personality chips ─── */}

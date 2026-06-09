@@ -17,7 +17,7 @@ const socialList = [
 ];
 
 export function MobileMenu() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const [open, setOpen] = React.useState(false);
   const [mounted, setMounted] = React.useState(false);
 
@@ -119,7 +119,7 @@ export function MobileMenu() {
                 {/* Controls row — music / sound / theme toggles */}
                 <div className="mb-5 flex items-center justify-between gap-3 rounded-2xl border border-border bg-card px-4 py-3">
                   <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-                    {t("nav.about").startsWith("Về") ? "Tuỳ chỉnh" : "Preferences"}
+                    {locale === "vi" ? "Tuỳ chỉnh" : "Preferences"}
                   </span>
                   <div className="flex items-center gap-2">
                     <MusicToggle />

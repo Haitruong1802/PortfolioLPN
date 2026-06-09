@@ -2,7 +2,7 @@ import type { Locale } from "./types";
 
 export const messages = {
   vi: {
-    "nav.about": "Về Nam",
+    "nav.about": "Giới thiệu",
     "nav.process": "Kinh nghiệm",
     "nav.services": "Skills",
     "nav.work": "Thành tích",
@@ -14,7 +14,7 @@ export const messages = {
     "hero.headline.line1": "GO BIG",
     "hero.headline.line2": "GO HOME.",
     "hero.scroll": "Cuộn để khám phá",
-    "about.eyebrow": "Về Nam",
+    "about.eyebrow": "Giới thiệu",
     "about.title": "Sinh viên năm 1 · Account in-the-making",
     "about.stat.years": "Cuộc thi đạt giải",
     "about.stat.campaigns": "Nơi đã làm việc",
