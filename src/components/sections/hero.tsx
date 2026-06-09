@@ -8,6 +8,7 @@ import { useLocale } from "@/lib/i18n/provider";
 import { profile } from "@/lib/content/profile";
 import { GlitchText } from "@/components/animations/glitch-text";
 import { TypingText } from "@/components/animations/typing-text";
+import { useLowEndDevice } from "@/lib/hooks/use-low-end-device";
 
 // 6 sparkles scattered around the portrait silhouette.
 // Position relative to the portrait wrapper (right column).
@@ -32,6 +33,7 @@ const SPARKLES = [
 export function Hero() {
   const { t, locale } = useLocale();
   const ref = React.useRef<HTMLElement>(null);
+  const lite = useLowEndDevice();
 
   // Disable per-character typing on mobile - even with rAF the residual
   // setState reflow could stutter on slow CPUs. Mobile gets the full
@@ -72,66 +74,66 @@ export function Hero() {
         style={{ y: portraitY }}
         className="pointer-events-none absolute inset-y-0 right-0 z-0 hidden h-full items-end justify-end lg:flex"
       >
-        {/* ░░░ Layered "3D depth" glow stack behind portrait ░░░
-            Each layer at different scale + blur + opacity → silhouette feels
-            like it's pushing out of the page. */}
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10 grid place-items-center"
-        >
-          {/* Layer 1 — deepest: huge cam-xanh radial, slowly pulses */}
-          <motion.div
-            animate={{ scale: [1, 1.04, 1], opacity: [0.55, 0.8, 0.55] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute h-[60rem] w-[60rem] rounded-full bg-gradient-to-br from-brand-orange/35 via-transparent to-brand-blue/35 blur-3xl"
-          />
-          {/* Layer 2 — mid: conic spectrum, slowly rotates → subtle aurora */}
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
-            className="absolute h-[44rem] w-[44rem] rounded-full bg-[conic-gradient(from_0deg,var(--brand-orange)_0%,transparent_25%,transparent_55%,var(--brand-blue)_75%,transparent_95%)] opacity-30 blur-3xl"
-          />
-          {/* Layer 3 — tight rim hug to silhouette: warm halo behind shoulders/head */}
-          <motion.div
-            animate={{
-              opacity: [0.7, 0.95, 0.7],
-              scale: [0.98, 1.02, 0.98],
-            }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute h-[32rem] w-[32rem] rounded-full bg-gradient-to-t from-brand-orange/50 via-brand-orange/20 to-transparent blur-2xl"
-            style={{ transform: "translateY(15%)" }}
-          />
-        </div>
+        {/* Layered glow + sparkles — desktop cinematic depth. Hidden on
+            low-end machines (3 infinite blurred-3xl animations + 6 infinite
+            sparkles were the heaviest GPU hit on the page). */}
+        {!lite && (
+          <>
+            <div
+              aria-hidden
+              className="absolute inset-0 -z-10 grid place-items-center"
+            >
+              <motion.div
+                animate={{ scale: [1, 1.04, 1], opacity: [0.55, 0.8, 0.55] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute h-[60rem] w-[60rem] rounded-full bg-gradient-to-br from-brand-orange/35 via-transparent to-brand-blue/35 blur-3xl"
+              />
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
+                className="absolute h-[44rem] w-[44rem] rounded-full bg-[conic-gradient(from_0deg,var(--brand-orange)_0%,transparent_25%,transparent_55%,var(--brand-blue)_75%,transparent_95%)] opacity-30 blur-3xl"
+              />
+              <motion.div
+                animate={{
+                  opacity: [0.7, 0.95, 0.7],
+                  scale: [0.98, 1.02, 0.98],
+                }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute h-[32rem] w-[32rem] rounded-full bg-gradient-to-t from-brand-orange/50 via-brand-orange/20 to-transparent blur-2xl"
+                style={{ transform: "translateY(15%)" }}
+              />
+            </div>
 
-        {/* ✦ Floating sparkles — 6 stars scattered around silhouette */}
-        {SPARKLES.map((s, i) => (
-          <motion.span
-            key={i}
-            aria-hidden
-            className="pointer-events-none absolute z-20 text-2xl md:text-3xl"
-            style={{
-              left: s.left,
-              top: s.top,
-              color: s.color,
-              textShadow: `0 0 14px ${s.color}`,
-            }}
-            initial={{ opacity: 0, scale: 0, y: 0 }}
-            animate={{
-              opacity: [0, 1, 1, 0],
-              scale: [0, 1, 1.2, 0.8],
-              y: [0, -10, -18, -26],
-            }}
-            transition={{
-              duration: s.dur,
-              delay: 1.5 + s.delay,
-              repeat: Infinity,
-              repeatDelay: 0.4,
-              ease: "easeInOut",
-            }}
-          >
-            ✦
-          </motion.span>
-        ))}
+            {SPARKLES.map((s, i) => (
+              <motion.span
+                key={i}
+                aria-hidden
+                className="pointer-events-none absolute z-20 text-2xl md:text-3xl"
+                style={{
+                  left: s.left,
+                  top: s.top,
+                  color: s.color,
+                  textShadow: `0 0 14px ${s.color}`,
+                }}
+                initial={{ opacity: 0, scale: 0, y: 0 }}
+                animate={{
+                  opacity: [0, 1, 1, 0],
+                  scale: [0, 1, 1.2, 0.8],
+                  y: [0, -10, -18, -26],
+                }}
+                transition={{
+                  duration: s.dur,
+                  delay: 1.5 + s.delay,
+                  repeat: Infinity,
+                  repeatDelay: 0.4,
+                  ease: "easeInOut",
+                }}
+              >
+                ✦
+              </motion.span>
+            ))}
+          </>
+        )}
 
         {/* Portrait — multi-layer drop-shadow gives "lifted off page" depth */}
         <div

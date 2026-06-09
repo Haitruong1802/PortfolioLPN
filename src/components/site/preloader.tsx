@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLowEndDevice } from "@/lib/hooks/use-low-end-device";
 
 const STORAGE_KEY = "portfolio-preloader-seen";
 const TOTAL_DURATION = 3200; // 3.2s smoother
@@ -17,6 +18,7 @@ const TOTAL_DURATION = 3200; // 3.2s smoother
  * Exit (3.2 – 4.0s) — Scale 1.5 + blur 25 → page emerges
  */
 export function Preloader() {
+  const lite = useLowEndDevice();
   const [visible, setVisible] = React.useState(true);
   const [phase, setPhase] = React.useState<1 | 2 | 3 | 4>(1);
   const [stars, setStars] = React.useState<
@@ -25,6 +27,15 @@ export function Preloader() {
 
   React.useEffect(() => {
     if (sessionStorage.getItem(STORAGE_KEY) === "1") {
+      setVisible(false);
+      return;
+    }
+
+    // Low-end devices skip the preloader cinema entirely - just mark it
+    // "seen" and reveal the page immediately. 3.2s of star animation was
+    // crashing the office machine before content ever rendered.
+    if (lite) {
+      sessionStorage.setItem(STORAGE_KEY, "1");
       setVisible(false);
       return;
     }
@@ -68,7 +79,7 @@ export function Preloader() {
       [t1, t2, t3, tEnd].forEach(clearTimeout);
       document.body.style.overflow = "";
     };
-  }, []);
+  }, [lite]);
 
   React.useEffect(() => {
     if (!visible) document.body.style.overflow = "";

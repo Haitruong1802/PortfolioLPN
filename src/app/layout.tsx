@@ -15,10 +15,7 @@ import { Cursor } from "@/components/site/cursor";
 import { ScrollProgress } from "@/components/site/scroll-progress";
 import { ScrollSpy } from "@/components/site/scroll-spy";
 import { DotGridBg } from "@/components/site/dot-grid-bg";
-import { FloatingShapes } from "@/components/site/floating-shapes";
-import { AuroraFlow } from "@/components/site/aurora-flow";
-import { SparkleDrift } from "@/components/site/sparkle-drift";
-import { CursorSpotlight } from "@/components/site/cursor-spotlight";
+import { AtmosphericLayers } from "@/components/site/atmospheric-layers";
 import { Header } from "@/components/site/header";
 import { StickyHireCTA } from "@/components/site/sticky-hire-cta";
 
@@ -90,15 +87,9 @@ export default function RootLayout({
                 <Preloader />
 
                 {/* ─── Persistent fixed UI (viewport-relative) ─── */}
-                {/* Atmospheric layers — GPU-heavy (huge blurred gradients,
-                    24 animated particles). Hidden below md to keep mobile
-                    smooth; the site was lagging hard on Vercel mobile. */}
-                <div className="hidden md:contents">
-                  <AuroraFlow />
-                  <FloatingShapes />
-                  <SparkleDrift />
-                  <CursorSpotlight />
-                </div>
+                {/* Atmospheric layers - hidden below md AND on low-end
+                    machines (low CPU/RAM, reduced-motion, slow network). */}
+                <AtmosphericLayers />
                 {/* DotGridBg is lightweight (static SVG pattern) — always on. */}
                 <DotGridBg />
                 {/* Foreground fixed UI */}
