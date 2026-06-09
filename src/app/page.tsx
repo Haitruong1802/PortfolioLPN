@@ -8,44 +8,31 @@ import { Contact } from "@/components/sections/contact";
 import { SkillsMarquee } from "@/components/sections/skills-marquee";
 import { Footer } from "@/components/site/footer";
 import { CurvedDivider } from "@/components/site/curved-divider";
-import { LazySection } from "@/components/site/lazy-section";
 
 export default function Home() {
   return (
     <>
       <main>
         {/* ── STORY-FIRST FLOW ──────────────────────────────────────────
-            Below-fold sections (About / Process / Services / Work / Contact)
-            are wrapped in LazySection so they only mount when the user has
-            scrolled within ~one viewport of them. This keeps the React tree
-            small at first paint - the only live motion components on initial
-            render are Hero's. Each section animates in normally when its
-            placeholder fires the IntersectionObserver. min-height numbers
-            are eyeballed from production renders; if a placeholder is too
-            short the page bumps when content swaps, too tall and there's
-            a brief gap.
+            Hero → About → Process → Services → Work → Contact.
+            Static imports, no LazySection wrappers - the lazy mount was
+            interfering with the Work section's sticky scroll (placeholder
+            min-height conflicting with the sticky child's overflow), so
+            scrolling past About locked up. Reverted at the user's request
+            ('trả về trước khi em fix'). The CPU optimisation pass via
+            useAnimationProfile + MotionConfig still applies.
         */}
         <Hero />
         <ImageMarquee />
-        <LazySection minHeight="220vh">
-          <About />
-        </LazySection>
+        <About />
         <CurvedDivider accent="orange" />
-        <LazySection minHeight="260vh">
-          <Process />
-        </LazySection>
+        <Process />
         <CurvedDivider accent="blue" flip />
-        <LazySection minHeight="140vh">
-          <Services />
-        </LazySection>
+        <Services />
         <SkillsMarquee />
-        <LazySection minHeight="320vh">
-          <Work />
-        </LazySection>
+        <Work />
         <CurvedDivider accent="orange" />
-        <LazySection minHeight="100vh">
-          <Contact />
-        </LazySection>
+        <Contact />
       </main>
       <Footer />
     </>

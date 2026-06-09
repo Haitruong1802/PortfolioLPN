@@ -263,14 +263,12 @@ function WorkStudioReveal({
     target: containerRef,
     offset: ["start start", "end end"],
   });
-  // Drive every transform off the raw scrollYProgress. Earlier passes
-  // used a useSpring smoothing layer on top - silky on a strong desktop,
-  // but it forced every one of the 21 transforms below to recompute on
-  // a spring step every frame, which was the actual scroll-locking work
-  // on weak desktops. Without the spring the transforms only fire when
-  // the user is actively scrolling (and at scroll-event cadence, not
-  // every animation frame).
-  const progress = scrollYProgress;
+  // Smooth out scroll for buttery transitions
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 80,
+    damping: 25,
+    mass: 0.5,
+  });
 
   // Intro panel: visible 0-18%, fades out 18-22%
   const introOpacity = useTransform(progress, [0, 0.16, 0.22], [1, 1, 0]);
