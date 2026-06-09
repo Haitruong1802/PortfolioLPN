@@ -215,24 +215,38 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
 
   // ─── Background music: REAL FILE preferred, synth fallback ─
   const startMusic = React.useCallback(async () => {
-    // PATH 1 — Try real audio file (Pixabay "Energy" by Coma-Media or whatever user drops in)
+    // PATH 1 — Real MP3 file. Skip probeAudioFile (its 1.5s timeout was
+    // racing the cold-cache fetch on mobile and falling through to synth
+    // on the first toggle, then playing the real file on the second toggle).
+    // Just create the Audio element and call play() directly — play()'s
+    // own promise tells us whether it actually started.
     if (!audioElRef.current) {
-      const audio = await probeAudioFile("/music/portfolio-bgm.mp3");
-      if (audio) {
-        try {
-          audioElRef.current = audio;
-          audio.volume = 0;
-          await audio.play();
-          fadeTo(0.45, 2000);
-          return; // ✓ real file playing — skip synth
-        } catch {
-          // Autoplay blocked or play error → fall through to synth
-          audioElRef.current = null;
-        }
+      try {
+        const audio = new Audio("/music/portfolio-bgm.mp3");
+        audio.preload = "auto";
+        audio.loop = true;
+        audio.volume = 0;
+        audioElRef.current = audio;
+        await audio.play();
+        fadeTo(0.45, 2000);
+        return;
+      } catch {
+        audioElRef.current = null;
+      }
+    } else {
+      // Already created (paused mid-fade or after a previous stop) — resume.
+      try {
+        await audioElRef.current.play();
+        fadeTo(0.45, 2000);
+        return;
+      } catch {
+        audioElRef.current = null;
       }
     }
 
-    // PATH 2 — Fallback to Web Audio synth (existing C-major pop progression)
+    // PATH 2 — Synth fallback only if the MP3 truly failed (file missing
+    // or autoplay blocked despite gesture). Real users with the bundled
+    // MP3 will never hit this branch.
     const ctx = ensureCtx();
     if (!ctx || musicNodesRef.current) return;
     try {
