@@ -102,12 +102,7 @@ export function SkillsMarquee() {
             transform: translateX(0);
           }
         }
-        @media (prefers-reduced-motion: reduce) {
-          :global(.marquee-track),
-          :global(.marquee-track-reverse) {
-            animation: none;
-          }
-        }
+        /* No prefers-reduced-motion override. See image-marquee.module.css. */
       `}</style>
     </section>
   );

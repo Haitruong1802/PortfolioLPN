@@ -58,10 +58,10 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .track,
-  .trackReverse {
-    animation: none;
-    will-change: auto;
-  }
-}
+/* No prefers-reduced-motion override here. The marquee is the only
+   horizontal motion on the page and it's the visual signature of the
+   site - removing it makes the page look broken even though the user
+   asked for reduced motion. CSS transforms are GPU-cheap; we accept
+   keeping this running even under reduce-motion since it doesn't
+   trigger motion sickness the way large scale/rotation moves do.
+   (Per-element pause-on-hover and pause-off-screen still apply.) */
