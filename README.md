@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PortfolioLPN
 
-## Getting Started
+Personal portfolio website for **Lê Phương Nam** — first-year UEH student, ENFP, looking for an Account Intern role at an Event Agency.
 
-First, run the development server:
+> **GO BIG OR GO HOME.**
+
+## Tech stack
+
+- **Next.js 16** (App Router, React 19, TypeScript)
+- **Tailwind CSS v4** + `@theme` directive
+- **Framer Motion** — section reveals, scroll-driven animations, sticky studio in Work section
+- **GSAP** — installed for future motion expansion
+- **Lenis** — silky smooth scroll
+- **react-zoom-pan-pinch** — wheel/pinch zoom inside image lightbox
+- **Web Audio API** + MP3 fallback — background music with master gain and fade
+
+## Sections (proof-first flow)
+
+1. **Hero** — GO BIG / OR / GO HOME headline, portrait, identity line, tagline
+2. **Work** — sticky cinematic studio with 4 contest case studies
+3. **Process** — Travelgroup UEH, Margroup UEH, Sintech
+4. **About** — DNA chips, story blocks, GO BIG philosophy panel, signed pledge closer
+5. **Services** — Hard / Soft / Tools skill tabs
+6. **Contact** — info cards, CV download, mailto + tel CTAs, socials
+
+## Running locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# open http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deploy
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This repo is set up for **Vercel** deploy out of the box:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Push to GitHub.
+2. Import the repo into Vercel.
+3. Set `metadataBase` in `src/app/layout.tsx` to the final domain after the first deploy.
 
-## Learn More
+## Credits
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Background music: ["Joyful Rhythm Walk Funk" by LightBeatsMusic](https://pixabay.com/music/funk-joyful-rhythm-walk-funk-513936/) — Pixabay CC0
+- Hero portrait, contest posters, and case-study assets are property of Lê Phương Nam.

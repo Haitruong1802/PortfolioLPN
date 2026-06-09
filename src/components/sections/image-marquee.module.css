@@ -1,0 +1,60 @@
+/* Dual-row CSS marquee — row 1 left, row 2 right (opposite).
+   Wider gaps, line-height relaxed so descenders không bị clip. */
+
+.track,
+.trackReverse {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  width: max-content;
+  white-space: nowrap;
+  will-change: transform;
+  line-height: 1.6;
+}
+
+.track {
+  animation: scroll 80s linear infinite;
+}
+
+.trackReverse {
+  animation: scrollReverse 110s linear infinite;
+  gap: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .track {
+    gap: 3rem;
+  }
+  .trackReverse {
+    gap: 4rem;
+  }
+}
+
+.paused {
+  animation-play-state: paused;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-33.333%);
+  }
+}
+
+@keyframes scrollReverse {
+  from {
+    transform: translateX(-33.333%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track,
+  .trackReverse {
+    animation: none;
+  }
+}
