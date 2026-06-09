@@ -330,17 +330,22 @@ export function Preloader() {
                   00
                 </span>
                 <div className="h-[2px] w-56 overflow-hidden rounded-full bg-white/10">
-                  {/* Plain <div> with a CSS width transition. Tried scaleX +
-                      transform earlier - the user reported the bar showed
-                      either nothing or a full-width gradient with no growth.
-                      Animating `width` here is cheap for a 2px-tall bar and
-                      avoids any interaction with MotionConfig reducedMotion=
-                      'always', which would otherwise snap a motion.div /
-                      transform animation straight to its end frame on mobile. */}
+                  {/* Pure CSS keyframe animation - fills left-to-right over
+                      MIN_HOLD_MS so the user always sees an obvious growth
+                      regardless of how fast the actual page loads. The bar's
+                      width starts at 2% and grows to 100% over 2.5s.
+
+                      Earlier attempts (framer-motion animate, transform
+                      scaleX with React state, CSS width transition with
+                      React state) all snapped to the end frame on iOS
+                      Safari because either MotionConfig reducedMotion=
+                      "always" was inherited, or progress jumped from 0 to
+                      1 between two React renders. A keyframe animation
+                      runs entirely in the compositor and is immune to
+                      either. */}
                   <div
                     className="preloader-bar h-full"
                     style={{
-                      width: `${Math.max(2, Math.round(progress * 100))}%`,
                       background:
                         "linear-gradient(to right, #ff7a1a, #ffffff, #2f7dff)",
                       boxShadow: "0 0 14px rgba(255,122,26,0.9)",
@@ -387,7 +392,22 @@ export function Preloader() {
 
           <style jsx>{`
             .preloader-bar {
-              transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+              width: 2%;
+              animation: preloaderFill 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            }
+            @keyframes preloaderFill {
+              from {
+                width: 2%;
+              }
+              to {
+                width: 100%;
+              }
+            }
+            @media (prefers-reduced-motion: reduce) {
+              .preloader-bar {
+                width: 100%;
+                animation: none;
+              }
             }
             .collapse-star {
               position: absolute;
