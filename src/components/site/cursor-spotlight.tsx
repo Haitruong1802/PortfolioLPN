@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useRafThrottle } from "@/lib/hooks/use-raf-throttle";
 
 /**
  * Cursor spotlight — a soft radial light follows the cursor across the whole
@@ -9,7 +10,11 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
  * rather than obscuring it.
  *
  * Touch devices: disabled (no cursor to follow).
- * Spring-damped follow for smooth feel.
+ * Mousemove is rAF-throttled so we never write to motion values more than
+ * once per frame even if the OS feeds us 240Hz of pointer events.
+ *
+ * Whether this component renders at all is decided one level up by
+ * AtmosphericLayers based on the animation profile.
  */
 export function CursorSpotlight() {
   const [enabled, setEnabled] = React.useState(false);
@@ -19,19 +24,19 @@ export function CursorSpotlight() {
   const x = useSpring(mx, { stiffness: 70, damping: 22, mass: 0.6 });
   const y = useSpring(my, { stiffness: 70, damping: 22, mass: 0.6 });
 
+  const onMove = useRafThrottle((e: MouseEvent) => {
+    mx.set(e.clientX);
+    my.set(e.clientY);
+  });
+
   React.useEffect(() => {
     if (typeof window === "undefined") return;
     if (!window.matchMedia("(pointer: fine)").matches) return;
     setEnabled(true);
 
-    const onMove = (e: MouseEvent) => {
-      mx.set(e.clientX);
-      my.set(e.clientY);
-    };
-
     window.addEventListener("mousemove", onMove);
     return () => window.removeEventListener("mousemove", onMove);
-  }, [mx, my]);
+  }, [onMove]);
 
   if (!enabled) return null;
 

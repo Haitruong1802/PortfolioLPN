@@ -1,14 +1,37 @@
+import dynamic from "next/dynamic";
 import { Hero } from "@/components/sections/hero";
 import { ImageMarquee } from "@/components/sections/image-marquee";
-import { About } from "@/components/sections/about";
-import { Services } from "@/components/sections/services";
-import { Process } from "@/components/sections/process";
-import { Work } from "@/components/sections/work";
-import { Contact } from "@/components/sections/contact";
-import { SkillsMarquee } from "@/components/sections/skills-marquee";
 import { Footer } from "@/components/site/footer";
 import { CurvedDivider } from "@/components/site/curved-divider";
-import { SmoothSectionReveal } from "@/components/animations/smooth-section-reveal";
+
+// Below-the-fold sections are dynamically imported so the initial JS
+// bundle only contains Hero + Marquee + Footer + Divider. The rest is
+// loaded just before the user scrolls into it.
+// Each section is itself a heavy client component (motion components,
+// scroll subscriptions, image grids).
+const About = dynamic(() =>
+  import("@/components/sections/about").then((m) => m.About),
+);
+const Process = dynamic(() =>
+  import("@/components/sections/process").then((m) => m.Process),
+);
+const Services = dynamic(() =>
+  import("@/components/sections/services").then((m) => m.Services),
+);
+const Work = dynamic(() =>
+  import("@/components/sections/work").then((m) => m.Work),
+);
+const Contact = dynamic(() =>
+  import("@/components/sections/contact").then((m) => m.Contact),
+);
+const SkillsMarquee = dynamic(() =>
+  import("@/components/sections/skills-marquee").then((m) => m.SkillsMarquee),
+);
+const SmoothSectionReveal = dynamic(() =>
+  import("@/components/animations/smooth-section-reveal").then(
+    (m) => m.SmoothSectionReveal,
+  ),
+);
 
 export default function Home() {
   return (

@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# performance audit + size report (regenerated each run; can opt in if needed)
+_backup_before_performance_optimize/

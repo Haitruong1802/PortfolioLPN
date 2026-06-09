@@ -8,17 +8,20 @@
   gap: 2rem;
   width: max-content;
   white-space: nowrap;
-  will-change: transform;
   line-height: 1.6;
+  /* will-change scoped per-animating rule below. A global will-change
+     keeps a compositor layer alive forever even off-screen. */
 }
 
 .track {
   animation: scroll 80s linear infinite;
+  will-change: transform;
 }
 
 .trackReverse {
   animation: scrollReverse 110s linear infinite;
   gap: 2.5rem;
+  will-change: transform;
 }
 
 @media (min-width: 768px) {
@@ -30,8 +33,11 @@
   }
 }
 
+/* When paused (off-screen, tab hidden, user hover) drop the compositor
+   hint so the GPU layer can be discarded. */
 .paused {
   animation-play-state: paused;
+  will-change: auto;
 }
 
 @keyframes scroll {
@@ -56,5 +62,6 @@
   .track,
   .trackReverse {
     animation: none;
+    will-change: auto;
   }
 }

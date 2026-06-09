@@ -2,10 +2,26 @@
 
 import * as React from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useAnimationProfile } from "@/lib/hooks/use-animation-profile";
+import { useRafThrottle } from "@/lib/hooks/use-raf-throttle";
 
 type CursorState = "default" | "hover" | "text";
 
+/**
+ * Custom cursor - desktop fine-pointer only, "full" profile only.
+ *
+ * Why "full" only:
+ *  - The cursor depends on a mouse, so coarse pointers (touch) are out by
+ *    definition.
+ *  - On "balanced" (mid-tier laptops or small desktops) the per-pixel
+ *    mousemove + spring + style update was the single biggest source of
+ *    scroll jank because mousemove fires alongside scroll events.
+ *
+ * Mousemove is rAF-throttled so even rapid cursor movement only triggers
+ * one DOM write per frame.
+ */
 export function Cursor() {
+  const profile = useAnimationProfile();
   const [enabled, setEnabled] = React.useState(false);
   const [state, setState] = React.useState<CursorState>("default");
   const [label, setLabel] = React.useState<string | null>(null);
@@ -16,15 +32,17 @@ export function Cursor() {
   const x = useSpring(mx, { stiffness: 800, damping: 40, mass: 0.25 });
   const y = useSpring(my, { stiffness: 800, damping: 40, mass: 0.25 });
 
+  const onMove = useRafThrottle((e: MouseEvent) => {
+    mx.set(e.clientX);
+    my.set(e.clientY);
+  });
+
   React.useEffect(() => {
+    if (profile !== "full") return;
+    if (typeof window === "undefined") return;
     const isFinePointer = window.matchMedia("(pointer: fine)").matches;
     if (!isFinePointer) return;
     setEnabled(true);
-
-    const onMove = (e: MouseEvent) => {
-      mx.set(e.clientX);
-      my.set(e.clientY);
-    };
 
     const onOver = (e: MouseEvent) => {
       const t = e.target as HTMLElement | null;
@@ -54,7 +72,7 @@ export function Cursor() {
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseover", onOver);
     };
-  }, [mx, my]);
+  }, [profile, onMove]);
 
   if (!enabled) return null;
 

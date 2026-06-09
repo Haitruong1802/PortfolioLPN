@@ -8,7 +8,7 @@ import { useLocale } from "@/lib/i18n/provider";
 import { profile } from "@/lib/content/profile";
 import { GlitchText } from "@/components/animations/glitch-text";
 import { TypingText } from "@/components/animations/typing-text";
-import { useLowEndDevice } from "@/lib/hooks/use-low-end-device";
+import { useAnimationProfile } from "@/lib/hooks/use-animation-profile";
 
 // 6 sparkles scattered around the portrait silhouette.
 // Position relative to the portrait wrapper (right column).
@@ -33,7 +33,9 @@ const SPARKLES = [
 export function Hero() {
   const { t, locale } = useLocale();
   const ref = React.useRef<HTMLElement>(null);
-  const lite = useLowEndDevice();
+  const animProfile = useAnimationProfile();
+  const lite = animProfile === "lite";
+  const balanced = animProfile === "balanced";
 
   // Disable per-character typing on mobile - even with rAF the residual
   // setState reflow could stutter on slow CPUs. Mobile gets the full
@@ -74,37 +76,51 @@ export function Hero() {
         style={{ y: portraitY }}
         className="pointer-events-none absolute inset-y-0 right-0 z-0 hidden h-full items-end justify-end lg:flex"
       >
-        {/* Layered glow + sparkles — desktop cinematic depth. Hidden on
-            low-end machines (3 infinite blurred-3xl animations + 6 infinite
-            sparkles were the heaviest GPU hit on the page). */}
+        {/* Portrait glow + sparkles - profile-aware.
+              full     : 3 blurred animated glow layers + 6 floating sparkles
+              balanced : 1 static glow layer (no blur animation) + 3 sparkles
+              lite     : nothing - portrait stands alone
+            The blurred-3xl layers under animate() were the heaviest hit on
+            the page; balanced keeps a single static halo so the silhouette
+            still has presence without the per-frame composite cost. */}
         {!lite && (
           <>
             <div
               aria-hidden
               className="absolute inset-0 -z-10 grid place-items-center"
             >
-              <motion.div
-                animate={{ scale: [1, 1.04, 1], opacity: [0.55, 0.8, 0.55] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute h-[60rem] w-[60rem] rounded-full bg-gradient-to-br from-brand-orange/35 via-transparent to-brand-blue/35 blur-3xl"
-              />
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
-                className="absolute h-[44rem] w-[44rem] rounded-full bg-[conic-gradient(from_0deg,var(--brand-orange)_0%,transparent_25%,transparent_55%,var(--brand-blue)_75%,transparent_95%)] opacity-30 blur-3xl"
-              />
-              <motion.div
-                animate={{
-                  opacity: [0.7, 0.95, 0.7],
-                  scale: [0.98, 1.02, 0.98],
-                }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute h-[32rem] w-[32rem] rounded-full bg-gradient-to-t from-brand-orange/50 via-brand-orange/20 to-transparent blur-2xl"
-                style={{ transform: "translateY(15%)" }}
-              />
+              {balanced ? (
+                // Single static halo - no infinite animation, no blur-3xl.
+                <div
+                  className="absolute h-[32rem] w-[32rem] rounded-full bg-gradient-to-t from-brand-orange/40 via-brand-orange/15 to-transparent blur-2xl"
+                  style={{ transform: "translateY(15%)" }}
+                />
+              ) : (
+                <>
+                  <motion.div
+                    animate={{ scale: [1, 1.04, 1], opacity: [0.55, 0.8, 0.55] }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute h-[60rem] w-[60rem] rounded-full bg-gradient-to-br from-brand-orange/35 via-transparent to-brand-blue/35 blur-3xl"
+                  />
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
+                    className="absolute h-[44rem] w-[44rem] rounded-full bg-[conic-gradient(from_0deg,var(--brand-orange)_0%,transparent_25%,transparent_55%,var(--brand-blue)_75%,transparent_95%)] opacity-30 blur-3xl"
+                  />
+                  <motion.div
+                    animate={{
+                      opacity: [0.7, 0.95, 0.7],
+                      scale: [0.98, 1.02, 0.98],
+                    }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute h-[32rem] w-[32rem] rounded-full bg-gradient-to-t from-brand-orange/50 via-brand-orange/20 to-transparent blur-2xl"
+                    style={{ transform: "translateY(15%)" }}
+                  />
+                </>
+              )}
             </div>
 
-            {SPARKLES.map((s, i) => (
+            {(balanced ? SPARKLES.slice(0, 3) : SPARKLES).map((s, i) => (
               <motion.span
                 key={i}
                 aria-hidden

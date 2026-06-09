@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import { useLocale } from "@/lib/i18n/provider";
+import { useInViewport } from "@/lib/hooks/use-in-viewport";
+import { usePageVisibility } from "@/lib/hooks/use-page-visibility";
 import { cn } from "@/lib/utils";
 
 // Curated skill chips — kept short for marquee rhythm.
@@ -33,17 +35,23 @@ const CHIPS: { label: { vi: string; en: string }; accent: "orange" | "blue" }[] 
  */
 export function SkillsMarquee() {
   const { locale } = useLocale();
-  const [paused, setPaused] = React.useState(false);
+  const ref = React.useRef<HTMLElement>(null);
+  // Pause when section is off-screen or tab hidden.
+  const inView = useInViewport(ref, { rootMargin: "200px" });
+  const pageVisible = usePageVisibility();
+  const [hoverPaused, setHoverPaused] = React.useState(false);
+  const paused = hoverPaused || !inView || !pageVisible;
 
   const top = CHIPS;
   const bottom = [...CHIPS].reverse();
 
   return (
     <section
+      ref={ref}
       aria-hidden
       className="relative my-12 overflow-hidden border-y border-border bg-card/40 py-8 md:my-16 md:py-10"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
+      onMouseEnter={() => setHoverPaused(true)}
+      onMouseLeave={() => setHoverPaused(false)}
     >
       {/* Edge gradient masks */}
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent md:w-40" />

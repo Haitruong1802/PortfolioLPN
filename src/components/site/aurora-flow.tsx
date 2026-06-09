@@ -24,7 +24,7 @@ export function AuroraFlow() {
           height: "85vw",
           background:
             "radial-gradient(circle, var(--brand-orange) 0%, transparent 55%)",
-          filter: "blur(140px)",
+          filter: "blur(100px)",
           opacity: 0.1,
           left: "-20%",
           top: "-20%",
@@ -48,7 +48,7 @@ export function AuroraFlow() {
           height: "80vw",
           background:
             "radial-gradient(circle, var(--brand-blue) 0%, transparent 55%)",
-          filter: "blur(140px)",
+          filter: "blur(100px)",
           opacity: 0.09,
           right: "-20%",
           bottom: "-20%",
@@ -72,7 +72,7 @@ export function AuroraFlow() {
           height: "60vw",
           background:
             "radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 50%)",
-          filter: "blur(160px)",
+          filter: "blur(120px)",
           opacity: 0.03,
           left: "20%",
           top: "30%",
