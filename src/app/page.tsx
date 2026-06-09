@@ -14,17 +14,14 @@ export default function Home() {
   return (
     <>
       <main>
-        {/* ── PROOF-FIRST FLOW ──────────────────────────────────────────
-            Recruiter scanning 30+ portfolios needs hook in first 5s.
-            New order: HOOK (achievements) → CONTEXT (experience) →
-            STORY (about) → CAPABILITY (skills) → ACTION (contact).
-            Old order put About + Process before any proof, costing 3
-            section scrolls before recruiter saw a single contest win.
+        {/* ── STORY-FIRST FLOW ──────────────────────────────────────────
+            Reverted to the original narrative order: introduce Nam first,
+            walk through his journey, then close with the proof + CTA.
         */}
         <Hero />
         <ImageMarquee />
         <SmoothSectionReveal>
-          <Work />
+          <About />
         </SmoothSectionReveal>
         <CurvedDivider accent="orange" />
         <SmoothSectionReveal>
@@ -32,13 +29,13 @@ export default function Home() {
         </SmoothSectionReveal>
         <CurvedDivider accent="blue" flip />
         <SmoothSectionReveal>
-          <About />
-        </SmoothSectionReveal>
-        <CurvedDivider accent="orange" />
-        <SmoothSectionReveal>
           <Services />
         </SmoothSectionReveal>
         <SkillsMarquee />
+        <SmoothSectionReveal>
+          <Work />
+        </SmoothSectionReveal>
+        <CurvedDivider accent="orange" />
         <SmoothSectionReveal>
           <Contact />
         </SmoothSectionReveal>

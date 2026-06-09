@@ -390,7 +390,7 @@ function WorkStudioReveal({
             {/* Section number + accent line */}
             <p className="mb-3 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-brand-orange">
               <span className="h-px w-12 bg-brand-orange/60" />
-              <span className="font-bold">01</span>
+              <span className="font-bold">04</span>
               <span>·</span>
               <span>{locale === "vi" ? "Thành tích" : "Achievements"}</span>
               <span className="h-px w-12 bg-brand-orange/60" />
@@ -501,7 +501,7 @@ function MobileWorkHeader({ locale }: { locale: "vi" | "en" }) {
         className="mb-4 flex items-center justify-center gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-brand-orange"
       >
         <span className="h-px w-10 bg-brand-orange/60" />
-        <span className="font-bold">01</span>
+        <span className="font-bold">04</span>
         <span className="opacity-60">·</span>
         <span>{locale === "vi" ? "Thành tích" : "Achievements"}</span>
         <span className="h-px w-10 bg-brand-orange/60" />

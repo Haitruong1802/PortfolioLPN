@@ -48,7 +48,7 @@ export function Services() {
       id="services"
       className="relative isolate section-py container-px mx-auto max-w-7xl overflow-hidden"
     >
-      <SectionSpotlight number="04" align="right" />
+      <SectionSpotlight number="03" align="right" />
       <AnimatedEyebrow color="text-brand-blue">
         {locale === "vi" ? "Skills & Expertise" : "Skills & Expertise"}
       </AnimatedEyebrow>

@@ -19,13 +19,13 @@ export function Header() {
   const bgOpacity = useTransform(scrollY, [0, 80], [0, 1]);
   const borderOpacity = useTransform(scrollY, [0, 80], [0, 0.8]);
 
-  // Order matches the new proof-first section flow in page.tsx:
-  // Hero → Work → Process → About → Services → Contact
+  // Order matches the story-first section flow in page.tsx:
+  // Hero → About → Process → Services → Work → Contact
   const links = [
-    { href: "#work", label: t("nav.work") },
-    { href: "#process", label: t("nav.process") },
     { href: "#about", label: t("nav.about") },
+    { href: "#process", label: t("nav.process") },
     { href: "#services", label: t("nav.services") },
+    { href: "#work", label: t("nav.work") },
     { href: "#contact", label: t("nav.contact") },
   ];
 

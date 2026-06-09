@@ -26,7 +26,7 @@ export function About() {
       id="about"
       className="relative section-py container-px mx-auto max-w-7xl"
     >
-      <SectionSpotlight number="03" align="right" />
+      <SectionSpotlight number="01" align="right" />
       <AnimatedEyebrow color="text-brand-orange">
         {locale === "vi" ? "Về Nam" : "About me"}
       </AnimatedEyebrow>

@@ -41,12 +41,12 @@ export function MobileMenu() {
     return () => window.removeEventListener("keydown", onEsc);
   }, []);
 
-  // Match the proof-first section flow in page.tsx
+  // Match the story-first section flow in page.tsx
   const links = [
-    { href: "#work", label: t("nav.work") },
-    { href: "#process", label: t("nav.process") },
     { href: "#about", label: t("nav.about") },
+    { href: "#process", label: t("nav.process") },
     { href: "#services", label: t("nav.services") },
+    { href: "#work", label: t("nav.work") },
     { href: "#contact", label: t("nav.contact") },
   ];
 
