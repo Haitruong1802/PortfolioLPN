@@ -80,7 +80,7 @@ export function MobileMenu() {
                   animate={{ x: 0 }}
                   exit={{ x: "100%" }}
                   transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  className="fixed right-6 top-0 z-[90] flex h-[100dvh] w-[80vw] max-w-[22rem] flex-col bg-background border-l border-border md:hidden"
+                  className="fixed right-0 top-0 z-[90] flex h-[100dvh] w-[88%] max-w-sm flex-col bg-background border-l border-border md:hidden"
                 >
               <div className="flex items-center justify-between border-b border-border p-5">
                 <span className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">

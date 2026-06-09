@@ -90,12 +90,17 @@ export default function RootLayout({
                 <Preloader />
 
                 {/* ─── Persistent fixed UI (viewport-relative) ─── */}
-                {/* Atmospheric layers — deepest behind everything */}
-                <AuroraFlow />
+                {/* Atmospheric layers — GPU-heavy (huge blurred gradients,
+                    24 animated particles). Hidden below md to keep mobile
+                    smooth; the site was lagging hard on Vercel mobile. */}
+                <div className="hidden md:contents">
+                  <AuroraFlow />
+                  <FloatingShapes />
+                  <SparkleDrift />
+                  <CursorSpotlight />
+                </div>
+                {/* DotGridBg is lightweight (static SVG pattern) — always on. */}
                 <DotGridBg />
-                <FloatingShapes />
-                <SparkleDrift />
-                <CursorSpotlight />
                 {/* Foreground fixed UI */}
                 <ScrollProgress />
                 <ScrollSpy />

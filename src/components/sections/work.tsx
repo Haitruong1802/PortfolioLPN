@@ -113,7 +113,7 @@ function WorkZoomModal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-y-0 left-0 right-8 z-[131] flex flex-col items-center justify-center p-4 sm:right-0 sm:p-10"
+            className="fixed inset-0 z-[131] flex flex-col items-center justify-center p-4 sm:p-10"
             onClick={onClose}
             role="dialog"
             aria-modal="true"
@@ -122,7 +122,7 @@ function WorkZoomModal({
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="absolute right-3 top-6 z-10 hidden h-11 w-11 place-items-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition-colors hover:bg-white/20 sm:grid sm:right-8 sm:top-8"
+              className="absolute right-6 top-6 z-10 hidden h-11 w-11 place-items-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition-colors hover:bg-white/20 sm:grid sm:right-8 sm:top-8"
             >
               <X className="h-5 w-5" />
             </button>

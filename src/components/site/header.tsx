@@ -47,7 +47,7 @@ export function Header() {
         className="absolute bottom-0 inset-x-0 h-px bg-border"
         style={{ opacity: borderOpacity }}
       />
-      <div className="relative mx-auto flex h-16 w-full max-w-7xl items-center justify-between pl-5 pr-10 md:pl-10 md:pr-14">
+      <div className="relative mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-5 md:px-10">
         <a
           href="#top"
           className="flex items-center gap-3 text-base font-semibold tracking-tight md:text-lg"
