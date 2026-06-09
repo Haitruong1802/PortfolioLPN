@@ -57,21 +57,11 @@ export function Work() {
 
   return (
     <section id="work" className="relative">
-      {/* Permanent stacked layout. We tried three times to keep the
-          sticky-scroll cinematic studio (full, full-without-spring,
-          full-with-profile-gate) and every test surface still hit either:
-            - scroll wheel locking up at the second contest, OR
-            - the four overlapping panels showing each other's text behind
-              the active one (the "TROPHIES" + "4 cột mốc" bleed-through
-              the user screenshotted).
-          The sticky studio relies on 21 useTransforms + four overlapping
-          z-10 panels with opacity crossfade, which compositor-class GPUs
-          (Intel HD 630, integrated MX series) just can't drive smoothly.
-          Stop fighting it - WorkStackedFallback gives the same content
-          (giant index, big card image, metrics block, tags) in a clean
-          vertical column with per-card whileInView entrance animations.
-          WorkStudioReveal stays in the file as reference. */}
-      <WorkStackedFallback locale={locale} onZoom={onZoom} />
+      {/* Original sticky-scroll cinematic studio (user requested 'như cũ').
+          Still uses useScroll + the 21 useTransform crossfade choreography,
+          but the spring smoothing has been removed so each frame only does
+          work while the user is actively scrolling. */}
+      <WorkStudioReveal locale={locale} onZoom={onZoom} />
 
       <WorkZoomModal img={zoomImg} onClose={() => setZoomImg(null)} />
     </section>
