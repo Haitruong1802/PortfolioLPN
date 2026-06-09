@@ -1,12 +1,12 @@
 // Inline script injected before hydration to prevent FOUC (Flash of Unstyled Content).
 // Reads localStorage + prefers-color-scheme and sets [data-theme] on <html>.
+// Defaults to dark and never consults prefers-color-scheme - we only flip
+// to light when the user has explicitly clicked the in-page toggle (which
+// persists 'light' to localStorage).
 const themeScript = `
 (function(){try{
-  var k='portfolio-theme';
-  var s=localStorage.getItem(k);
-  if(s==='dark'||s==='light'){document.documentElement.setAttribute('data-theme',s);return;}
-  var m=window.matchMedia('(prefers-color-scheme: light)').matches;
-  document.documentElement.setAttribute('data-theme',m?'light':'dark');
+  var s=localStorage.getItem('portfolio-theme');
+  document.documentElement.setAttribute('data-theme',s==='light'?'light':'dark');
 }catch(e){document.documentElement.setAttribute('data-theme','dark');}})();
 `;
 

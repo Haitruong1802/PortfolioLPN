@@ -19,18 +19,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
+    // Default to dark. We ignore prefers-color-scheme on purpose - the site
+    // is designed around the dark palette and the OS preference was forcing
+    // light mode on users who otherwise expected dark. The in-page toggle is
+    // the only thing that can switch theme; we just persist the choice.
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored === "dark" || stored === "light") {
-      setThemeState(stored);
-      document.documentElement.setAttribute("data-theme", stored);
-    } else {
-      const prefersLight = window.matchMedia(
-        "(prefers-color-scheme: light)",
-      ).matches;
-      const initial: Theme = prefersLight ? "light" : "dark";
-      setThemeState(initial);
-      document.documentElement.setAttribute("data-theme", initial);
-    }
+    const initial: Theme = stored === "light" ? "light" : "dark";
+    setThemeState(initial);
+    document.documentElement.setAttribute("data-theme", initial);
     setMounted(true);
   }, []);
 
