@@ -21,6 +21,14 @@ const DNA_CHIPS: { vi: string; en: string; accent: "orange" | "blue" | "gradient
 
 export function About() {
   const { locale } = useLocale();
+  const animProfile = useAnimationProfile();
+  // On balanced/lite skip the initial:opacity:0 + whileInView pair entirely.
+  // With MotionConfig reducedMotion="always" the transition is instant, but
+  // the initial state persists until the IntersectionObserver fires - which
+  // on iOS Safari is slow enough that the user sees the section as a black
+  // gap mid-scroll before content appears. With reveal=false we just render
+  // the content with no initial hidden state.
+  const reveal = animProfile === "full";
 
   return (
     <section
@@ -37,9 +45,9 @@ export function About() {
         {DNA_CHIPS.map((chip, i) => (
           <motion.span
             key={chip.en}
-            initial={{ opacity: 0, y: 12, scale: 0.8 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, margin: "200px 0px" }}
+            initial={reveal ? { opacity: 0, y: 12, scale: 0.8 } : false}
+            whileInView={reveal ? { opacity: 1, y: 0, scale: 1 } : undefined}
+            viewport={reveal ? { once: true, margin: "200px 0px" } : undefined}
             transition={{
               delay: i * 0.05,
               duration: 0.4,
@@ -97,9 +105,9 @@ export function About() {
 
       {/* ─── 4. GO BIG OR GO HOME — Frameless cinematic ─── */}
       <motion.figure
-        initial={{ opacity: 0, scale: 0.96 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true, margin: "200px 0px" }}
+        initial={reveal ? { opacity: 0, scale: 0.96 } : false}
+        whileInView={reveal ? { opacity: 1, scale: 1 } : undefined}
+        viewport={reveal ? { once: true, margin: "200px 0px" } : undefined}
         transition={{ duration: 0.8, delay: 0.2 }}
         className="relative my-20 overflow-hidden py-8 sm:py-12 md:py-16"
       >
@@ -123,9 +131,9 @@ export function About() {
         {/* GO BIG / OR / GO HOME — 3 dòng giống Hero, blur slide-in stagger */}
         <h3 className="mt-6 font-display font-extrabold leading-[0.92] tracking-tight">
           <motion.span
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "200px 0px" }}
+            initial={reveal ? { opacity: 0, x: -40 } : false}
+            whileInView={reveal ? { opacity: 1, x: 0 } : undefined}
+            viewport={reveal ? { once: true, margin: "200px 0px" } : undefined}
             transition={{ duration: 0.7, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
             className="block whitespace-nowrap text-go-big"
             style={{ fontSize: "clamp(2.5rem, 10vw, 7rem)" }}
@@ -133,9 +141,9 @@ export function About() {
             GO BIG
           </motion.span>
           <motion.span
-            initial={{ opacity: 0, scale: 0.7 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "200px 0px" }}
+            initial={reveal ? { opacity: 0, scale: 0.7 } : false}
+            whileInView={reveal ? { opacity: 1, scale: 1 } : undefined}
+            viewport={reveal ? { once: true, margin: "200px 0px" } : undefined}
             transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="block whitespace-nowrap text-go-or my-1"
             style={{ fontSize: "clamp(1.25rem, 5vw, 3.5rem)" }}
@@ -143,9 +151,9 @@ export function About() {
             OR
           </motion.span>
           <motion.span
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "200px 0px" }}
+            initial={reveal ? { opacity: 0, x: 40 } : false}
+            whileInView={reveal ? { opacity: 1, x: 0 } : undefined}
+            viewport={reveal ? { once: true, margin: "200px 0px" } : undefined}
             transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="block whitespace-nowrap text-go-home"
             style={{ fontSize: "clamp(2.5rem, 10vw, 7rem)" }}
@@ -160,9 +168,9 @@ export function About() {
 
         {/* Signature */}
         <motion.p
-          initial={{ opacity: 0, x: 20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "200px 0px" }}
+          initial={reveal ? { opacity: 0, x: 20 } : false}
+          whileInView={reveal ? { opacity: 1, x: 0 } : undefined}
+          viewport={reveal ? { once: true, margin: "200px 0px" } : undefined}
           transition={{ duration: 0.6, delay: 1.2 }}
           className="mt-8 flex items-center justify-end gap-2 font-display text-base italic text-foreground/70 sm:text-lg"
         >
@@ -185,11 +193,13 @@ export function About() {
 // Different visual rhythm than card-style 01/02
 // ─────────────────────────────────────────────
 function CommitmentCloser({ label, text }: { label: string; text: string }) {
+  const profile = useAnimationProfile();
+  const reveal = profile === "full";
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "200px 0px" }}
+      initial={reveal ? { opacity: 0, y: 24 } : false}
+      whileInView={reveal ? { opacity: 1, y: 0 } : undefined}
+      viewport={reveal ? { once: true, margin: "200px 0px" } : undefined}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       className="relative mx-auto mt-6 max-w-4xl text-center"
     >
@@ -201,9 +211,9 @@ function CommitmentCloser({ label, text }: { label: string; text: string }) {
 
       {/* 04 + label eyebrow row */}
       <motion.div
-        initial={{ opacity: 0, scaleX: 0.6 }}
-        whileInView={{ opacity: 1, scaleX: 1 }}
-        viewport={{ once: true, margin: "200px 0px" }}
+        initial={reveal ? { opacity: 0, scaleX: 0.6 } : false}
+        whileInView={reveal ? { opacity: 1, scaleX: 1 } : undefined}
+        viewport={reveal ? { once: true, margin: "200px 0px" } : undefined}
         transition={{ duration: 0.7, delay: 0.1 }}
         className="mb-10 flex items-center justify-center gap-4"
       >
@@ -223,9 +233,9 @@ function CommitmentCloser({ label, text }: { label: string; text: string }) {
       {/* Big gradient open-quote mark */}
       <motion.span
         aria-hidden
-        initial={{ opacity: 0, scale: 0.5, rotate: -15 }}
-        whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-        viewport={{ once: true, margin: "200px 0px" }}
+        initial={reveal ? { opacity: 0, scale: 0.5, rotate: -15 } : false}
+        whileInView={reveal ? { opacity: 1, scale: 1, rotate: 0 } : undefined}
+        viewport={reveal ? { once: true, margin: "200px 0px" } : undefined}
         transition={{
           duration: 0.9,
           delay: 0.2,
@@ -240,9 +250,9 @@ function CommitmentCloser({ label, text }: { label: string; text: string }) {
 
       {/* Pledge text — italic, large, breathable */}
       <motion.blockquote
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "200px 0px" }}
+        initial={reveal ? { opacity: 0, y: 16 } : false}
+        whileInView={reveal ? { opacity: 1, y: 0 } : undefined}
+        viewport={reveal ? { once: true, margin: "200px 0px" } : undefined}
         transition={{ duration: 0.9, delay: 0.35 }}
         className="-mt-6 px-2 font-display italic leading-[1.4] text-foreground sm:leading-[1.45]"
         style={{ fontSize: "clamp(1.125rem, 2.4vw, 1.625rem)" }}
@@ -252,17 +262,17 @@ function CommitmentCloser({ label, text }: { label: string; text: string }) {
 
       {/* Signature row — handwritten feel + ENFP tag */}
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "200px 0px" }}
+        initial={reveal ? { opacity: 0, y: 12 } : false}
+        whileInView={reveal ? { opacity: 1, y: 0 } : undefined}
+        viewport={reveal ? { once: true, margin: "200px 0px" } : undefined}
         transition={{ duration: 0.7, delay: 0.6 }}
         className="mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4"
       >
         <motion.span
           aria-hidden
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true, margin: "200px 0px" }}
+          initial={reveal ? { scaleX: 0 } : false}
+          whileInView={reveal ? { scaleX: 1 } : undefined}
+          viewport={reveal ? { once: true, margin: "200px 0px" } : undefined}
           transition={{ duration: 0.9, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="h-px w-12 origin-right bg-gradient-to-r from-transparent to-brand-orange sm:w-20"
         />
@@ -274,9 +284,9 @@ function CommitmentCloser({ label, text }: { label: string; text: string }) {
         </span>
         <motion.span
           aria-hidden
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true, margin: "200px 0px" }}
+          initial={reveal ? { scaleX: 0 } : false}
+          whileInView={reveal ? { scaleX: 1 } : undefined}
+          viewport={reveal ? { once: true, margin: "200px 0px" } : undefined}
           transition={{ duration: 0.9, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="h-px w-12 origin-left bg-gradient-to-l from-transparent to-brand-blue sm:w-20"
         />
@@ -301,6 +311,8 @@ function StoryBlock({
   accent: "orange" | "blue" | "foreground";
   delay: number;
 }) {
+  const profile = useAnimationProfile();
+  const reveal = profile === "full";
   const accentText =
     accent === "orange"
       ? "text-brand-orange"
@@ -322,9 +334,9 @@ function StoryBlock({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "200px 0px" }}
+      initial={reveal ? { opacity: 0, y: 24 } : false}
+      whileInView={reveal ? { opacity: 1, y: 0 } : undefined}
+      viewport={reveal ? { once: true, margin: "200px 0px" } : undefined}
       transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -4 }}
       className={cn(

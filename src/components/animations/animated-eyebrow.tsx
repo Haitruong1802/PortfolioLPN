@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useAnimationProfile } from "@/lib/hooks/use-animation-profile";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -14,11 +15,13 @@ export function AnimatedEyebrow({
   color = "text-brand-orange",
   className,
 }: Props) {
+  const profile = useAnimationProfile();
+  const reveal = profile === "full";
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "200px 0px" }}
+      initial={reveal ? { opacity: 0, y: 12 } : false}
+      whileInView={reveal ? { opacity: 1, y: 0 } : undefined}
+      viewport={reveal ? { once: true, margin: "200px 0px" } : undefined}
       transition={{ duration: 0.6 }}
       className={cn(
         "mb-3 flex items-center gap-2 text-xs font-mono uppercase tracking-[0.2em]",
