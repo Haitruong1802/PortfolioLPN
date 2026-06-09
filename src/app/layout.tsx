@@ -8,6 +8,7 @@ import { SoundProvider } from "@/lib/sound/provider";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { PageTransition } from "@/components/providers/page-transition";
 import { PageEntrance } from "@/components/providers/page-entrance";
+import { MotionScope } from "@/components/providers/motion-scope";
 import { Preloader } from "@/components/site/preloader";
 // Persistent fixed UI — must live OUTSIDE PageEntrance so its transform
 // doesn't trap position:fixed elements inside a containing block.
@@ -84,25 +85,27 @@ export default function RootLayout({
           <LocaleProvider>
             <SoundProvider>
               <SmoothScrollProvider>
-                <Preloader />
+                <MotionScope>
+                  <Preloader />
 
-                {/* ─── Persistent fixed UI (viewport-relative) ─── */}
-                {/* Atmospheric layers - hidden below md AND on low-end
-                    machines (low CPU/RAM, reduced-motion, slow network). */}
-                <AtmosphericLayers />
-                {/* DotGridBg is lightweight (static SVG pattern) — always on. */}
-                <DotGridBg />
-                {/* Foreground fixed UI */}
-                <ScrollProgress />
-                <ScrollSpy />
-                <Cursor />
-                <Header />
-                <StickyHireCTA />
+                  {/* ─── Persistent fixed UI (viewport-relative) ─── */}
+                  {/* Atmospheric layers - hidden below md AND on low-end
+                      machines (low CPU/RAM, reduced-motion, slow network). */}
+                  <AtmosphericLayers />
+                  {/* DotGridBg is lightweight (static SVG pattern) — always on. */}
+                  <DotGridBg />
+                  {/* Foreground fixed UI */}
+                  <ScrollProgress />
+                  <ScrollSpy />
+                  <Cursor />
+                  <Header />
+                  <StickyHireCTA />
 
-                {/* ─── Main content area — wrapped in entrance animation ─── */}
-                <PageEntrance>
-                  <PageTransition>{children}</PageTransition>
-                </PageEntrance>
+                  {/* ─── Main content area — wrapped in entrance animation ─── */}
+                  <PageEntrance>
+                    <PageTransition>{children}</PageTransition>
+                  </PageEntrance>
+                </MotionScope>
               </SmoothScrollProvider>
             </SoundProvider>
           </LocaleProvider>
