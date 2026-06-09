@@ -24,10 +24,21 @@ export function SmoothScrollProvider({
 
   React.useEffect(() => {
     if (typeof window === "undefined") return;
+    // Lenis is fully disabled. It caches its own scroll position and never
+    // syncs with native scroll updates (keyboard arrows, scrollbar drag,
+    // anchor jumps from other sources). Inside the Work section's 500vh
+    // sticky-scroll container that mismatch surfaced as:
+    //   - user wheel-scrolls past contest 2 -> Lenis updates internal pos
+    //   - user keyboards further down -> native scrolls, Lenis still on
+    //     contest 2 position
+    //   - user wheels again -> Lenis snaps the page BACK to contest 2
+    // Native scroll on modern Chrome / Edge is already smooth enough that
+    // the user won't miss the silk. Lenis stays installed; we just don't
+    // start it.
+    return;
+    /* eslint-disable @typescript-eslint/no-unreachable */
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (window.matchMedia("(max-width: 767px)").matches) return;
-    // The big one: only run Lenis on profile=full. Balanced + lite use the
-    // browser's native scroll, which costs zero JS per frame.
     if (profile !== "full") return;
 
     const lenis = new Lenis({
@@ -80,6 +91,7 @@ export function SmoothScrollProvider({
       lenis.destroy();
       document.removeEventListener("click", onAnchorClick);
     };
+    /* eslint-enable @typescript-eslint/no-unreachable */
   }, [profile]);
 
   return <>{children}</>;
