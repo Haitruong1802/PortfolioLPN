@@ -51,7 +51,7 @@ export function About() {
               chip.accent === "blue" &&
                 "border-brand-blue/40 bg-brand-blue/10 text-brand-blue shadow-[0_0_20px_rgba(47,125,255,0.15)]",
               chip.accent === "gradient" &&
-                "border-transparent bg-gradient-to-r from-brand-orange via-foreground to-brand-blue text-white font-bold shadow-[0_0_24px_rgba(255,122,26,0.25)]",
+                "border-transparent bg-gradient-to-r from-brand-orange to-brand-blue text-white font-bold shadow-[0_0_24px_rgba(255,122,26,0.25)]",
             )}
           >
             <span className="mr-1.5">▸</span>
