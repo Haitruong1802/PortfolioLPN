@@ -13,6 +13,15 @@ const PRELOADER_DURATION = 3200; // ms, matches preloader
  */
 export function PageEntrance({ children }: { children: React.ReactNode }) {
   const [ready, setReady] = React.useState(false);
+  // Skip the scale + blur on mobile. `filter: blur()` animation is GPU-
+  // expensive (forces a separate composite layer per frame) and was
+  // freezing the marquee / typing text for ~1s on first paint. Mobile
+  // gets a plain opacity fade instead.
+  const [isMobile, setIsMobile] = React.useState(false);
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    setIsMobile(window.matchMedia("(max-width: 767px)").matches);
+  }, []);
 
   React.useEffect(() => {
     if (typeof window === "undefined") return;
@@ -50,6 +59,18 @@ export function PageEntrance({ children }: { children: React.ReactNode }) {
       requestAnimationFrame(() => window.scrollTo(0, 0));
     }
   }, [ready]);
+
+  if (isMobile) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={ready ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
+        {children}
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
