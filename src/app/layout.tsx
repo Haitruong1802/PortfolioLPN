@@ -12,7 +12,8 @@ import { MotionScope } from "@/components/providers/motion-scope";
 import { Preloader } from "@/components/site/preloader";
 // Persistent fixed UI — must live OUTSIDE PageEntrance so its transform
 // doesn't trap position:fixed elements inside a containing block.
-import { Cursor } from "@/components/site/cursor";
+// (Custom Cursor removed - user asked for the system cursor on every
+// device after reports of it disappearing in edge cases.)
 import { ScrollProgress } from "@/components/site/scroll-progress";
 import { ScrollSpy } from "@/components/site/scroll-spy";
 import { DotGridBg } from "@/components/site/dot-grid-bg";
@@ -97,7 +98,6 @@ export default function RootLayout({
                   {/* Foreground fixed UI */}
                   <ScrollProgress />
                   <ScrollSpy />
-                  <Cursor />
                   <Header />
                   <StickyHireCTA />
 
