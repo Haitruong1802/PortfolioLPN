@@ -33,6 +33,16 @@ export function Hero() {
   const { t, locale } = useLocale();
   const ref = React.useRef<HTMLElement>(null);
 
+  // Disable per-character typing on mobile - even with rAF the residual
+  // setState reflow could stutter on slow CPUs. Mobile gets the full
+  // tagline in one fade-in instead; the typing animation is a desktop-
+  // only flourish.
+  const [isMobile, setIsMobile] = React.useState(false);
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    setIsMobile(window.matchMedia("(max-width: 767px)").matches);
+  }, []);
+
   // Scroll-driven exit
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -211,20 +221,24 @@ export function Hero() {
               transition={{ duration: 0.7, delay: 1.1 }}
               className="relative mt-4 max-w-2xl text-base italic leading-relaxed text-muted-foreground sm:text-lg md:text-xl"
             >
-              <span aria-hidden className="invisible">
-                {profile.tagline[locale]}
-              </span>
-              <span className="absolute inset-0">
-                {/* speed 24ms × ~110 chars + punctuation pauses ≈ 3s, which
-                    matches the preloader run-time. Typing happens entirely
-                    behind the preloader so the tagline is already fully
-                    written the instant the page becomes visible. */}
-                <TypingText
-                  text={profile.tagline[locale]}
-                  speed={24}
-                  startDelay={0}
-                />
-              </span>
+              {isMobile ? (
+                // Mobile: just show the full tagline. Skip typing entirely.
+                <span>{profile.tagline[locale]}</span>
+              ) : (
+                <>
+                  {/* Desktop: ghost preserves layout while typing reveals chars. */}
+                  <span aria-hidden className="invisible">
+                    {profile.tagline[locale]}
+                  </span>
+                  <span className="absolute inset-0">
+                    <TypingText
+                      text={profile.tagline[locale]}
+                      speed={24}
+                      startDelay={0}
+                    />
+                  </span>
+                </>
+              )}
             </motion.p>
 
           </div>
