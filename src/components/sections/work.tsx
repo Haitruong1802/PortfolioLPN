@@ -18,7 +18,6 @@ import { SectionSpotlight } from "@/components/site/section-spotlight";
 import { LetterReveal } from "@/components/animations/letter-reveal";
 import { ImageGlow } from "@/components/animations/image-glow";
 import { Tilt } from "@/components/animations/tilt";
-import { useAnimationProfile } from "@/lib/hooks/use-animation-profile";
 
 const accentText: Record<string, string> = {
   orange: "text-brand-orange",
@@ -50,7 +49,6 @@ const accentBg: Record<string, string> = {
 
 export function Work() {
   const { locale } = useLocale();
-  const profile = useAnimationProfile();
   const [zoomImg, setZoomImg] = React.useState<{ src: string; alt: string } | null>(null);
   const onZoom = React.useCallback(
     (src: string, alt: string) => setZoomImg({ src, alt }),
@@ -59,16 +57,15 @@ export function Work() {
 
   return (
     <section id="work" className="relative">
-      {/* Cinematic sticky-scroll studio is desktop-full only - it runs a
-          spring-smoothed useScroll + 21 useTransforms on the same value
-          which on weak desktops (i7-7th gen Intel HD 630) was heavy enough
-          to lock the scroll thread at the second contest. balanced + lite
-          get the same stacked layout the mobile viewport already uses. */}
-      {profile === "full" ? (
-        <WorkStudioReveal locale={locale} onZoom={onZoom} />
-      ) : (
-        <WorkStackedFallback locale={locale} onZoom={onZoom} />
-      )}
+      {/* The sticky-scroll studio kept locking up scroll even on machines
+          we classified as "full" - navigator.hardwareConcurrency reports 8
+          for an i7-7th gen desktop, so a profile guard wasn't catching it.
+          Use the stacked layout for everyone; it's still the original
+          cinematic content (giant index, big card, metrics block) just
+          scrolled natively one after another instead of pinned + cross-
+          faded. WorkStudioReveal stays in the file in case we ever want
+          to bring the sticky version back behind an explicit opt-in. */}
+      <WorkStackedFallback locale={locale} onZoom={onZoom} />
 
       <WorkZoomModal img={zoomImg} onClose={() => setZoomImg(null)} />
     </section>

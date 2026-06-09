@@ -57,14 +57,15 @@ function detectProfile(): AnimationProfile {
   // Very weak hardware -> lite
   if (cores <= 2 || memory <= 2) return "lite";
 
-  // "full" is reserved for clearly strong desktops: >= 8 logical cores,
-  // >= 8 GB RAM, mouse pointer, large viewport. Everything else - including
-  // the typical 4-6 core office machine the user reported cursor/marquee
-  // problems on - gets "balanced", which hides the custom cursor and the
-  // heaviest infinite glow layers but keeps the marquees + base layout.
+  // "full" is reserved for unambiguously strong desktops: >= 12 logical
+  // cores AND >= 16 GB RAM, mouse pointer, large viewport. The earlier
+  // bar of 8 / 8 was matching i7-7th gen office desktops because Intel
+  // hyperthreaded i7s report 8 logical cores even with a relatively
+  // weak Intel HD 630 GPU - and the sticky scroll studio + per-frame
+  // spring updates were enough to lock those machines up.
   const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
   const smallViewport = window.matchMedia("(max-width: 1024px)").matches;
-  if (cores < 8 || memory < 8 || coarsePointer || smallViewport) {
+  if (cores < 12 || memory < 16 || coarsePointer || smallViewport) {
     return "balanced";
   }
 
