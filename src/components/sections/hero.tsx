@@ -201,18 +201,26 @@ export function Hero() {
               <span className="text-muted-foreground"> — {t("hero.eyebrow")}</span>
             </motion.p>
 
-            {/* Tagline italic — narrative, typed character by character */}
+            {/* Tagline italic — narrative, typed character by character.
+                Ghost copy reserves the final layout so wraps don't reflow the
+                page as new characters arrive (was causing a noticeable stutter
+                at the word "Account" mid-line on mobile). */}
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 1.1 }}
-              className="mt-4 max-w-2xl text-base italic leading-relaxed text-muted-foreground sm:text-lg md:text-xl"
+              className="relative mt-4 max-w-2xl text-base italic leading-relaxed text-muted-foreground sm:text-lg md:text-xl"
             >
-              <TypingText
-                text={profile.tagline[locale]}
-                speed={38}
-                startDelay={1400}
-              />
+              <span aria-hidden className="invisible">
+                {profile.tagline[locale]}
+              </span>
+              <span className="absolute inset-0">
+                <TypingText
+                  text={profile.tagline[locale]}
+                  speed={38}
+                  startDelay={1400}
+                />
+              </span>
             </motion.p>
 
           </div>
