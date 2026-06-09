@@ -9,6 +9,7 @@ import { SectionSpotlight } from "@/components/site/section-spotlight";
 import { ScrollTextReveal } from "@/components/animations/scroll-text-reveal";
 import { LetterReveal } from "@/components/animations/letter-reveal";
 import { useLowEndDevice } from "@/lib/hooks/use-low-end-device";
+import { useAnimationProfile } from "@/lib/hooks/use-animation-profile";
 import { cn } from "@/lib/utils";
 
 // ─── 1. DNA chips at top — personality snapshot ───
