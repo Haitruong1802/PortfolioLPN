@@ -218,7 +218,7 @@ export function Hero() {
                 <TypingText
                   text={profile.tagline[locale]}
                   speed={38}
-                  startDelay={3800}
+                  startDelay={0}
                 />
               </span>
             </motion.p>
