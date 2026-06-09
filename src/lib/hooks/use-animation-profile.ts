@@ -57,13 +57,14 @@ function detectProfile(): AnimationProfile {
   // Very weak hardware -> lite
   if (cores <= 2 || memory <= 2) return "lite";
 
-  // Mid-tier (typical office laptop, dual-core i3 with 4GB) or coarse
-  // pointer (touch) -> balanced. Touch lands in balanced even if specs
-  // look fine because per-pixel pointer effects don't apply on touch
-  // and continuous infinite animations still cost battery there.
+  // "full" is reserved for clearly strong desktops: >= 8 logical cores,
+  // >= 8 GB RAM, mouse pointer, large viewport. Everything else - including
+  // the typical 4-6 core office machine the user reported cursor/marquee
+  // problems on - gets "balanced", which hides the custom cursor and the
+  // heaviest infinite glow layers but keeps the marquees + base layout.
   const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
   const smallViewport = window.matchMedia("(max-width: 1024px)").matches;
-  if (cores <= 4 || memory <= 4 || coarsePointer || smallViewport) {
+  if (cores < 8 || memory < 8 || coarsePointer || smallViewport) {
     return "balanced";
   }
 

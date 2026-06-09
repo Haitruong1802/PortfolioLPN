@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import { useAnimationProfile } from "@/lib/hooks/use-animation-profile";
 import { useRafThrottle } from "@/lib/hooks/use-raf-throttle";
 
@@ -22,6 +22,15 @@ type CursorState = "default" | "hover" | "text";
  */
 export function Cursor() {
   const profile = useAnimationProfile();
+  // Belt + braces: framer-motion's useReducedMotion picks up both the OS
+  // prefers-reduced-motion setting AND any MotionConfig override higher
+  // in the tree. If either says "stop animating", the spring that tracks
+  // the cursor will not move - the custom dot would stay at -100,-100
+  // off-screen, while the inline `cursor: none` style hides the system
+  // cursor too. Net result the user sees: no cursor at all. Gate the
+  // entire component on a positive signal so we never silently end up
+  // in that state.
+  const reducedMotion = useReducedMotion();
   const [enabled, setEnabled] = React.useState(false);
   const [state, setState] = React.useState<CursorState>("default");
   const [label, setLabel] = React.useState<string | null>(null);
@@ -39,6 +48,7 @@ export function Cursor() {
 
   React.useEffect(() => {
     if (profile !== "full") return;
+    if (reducedMotion) return;
     if (typeof window === "undefined") return;
     const isFinePointer = window.matchMedia("(pointer: fine)").matches;
     if (!isFinePointer) return;
@@ -72,7 +82,7 @@ export function Cursor() {
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseover", onOver);
     };
-  }, [profile, onMove]);
+  }, [profile, reducedMotion, onMove]);
 
   if (!enabled) return null;
 
