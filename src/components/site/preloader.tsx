@@ -327,12 +327,12 @@ export function Preloader() {
                   00
                 </span>
                 <div className="h-[2px] w-56 overflow-hidden rounded-full bg-white/10">
-                  <motion.div
-                    className="h-full"
-                    initial={false}
-                    animate={{ width: `${Math.max(5, Math.round(progress * 100))}%` }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
+                  <div
+                    className="h-full origin-left"
                     style={{
+                      width: "100%",
+                      transform: `scaleX(${Math.max(0.02, progress)})`,
+                      transition: "transform 0.3s ease-out",
                       background:
                         "linear-gradient(to right, #ff7a1a, #ffffff, #2f7dff)",
                       boxShadow: "0 0 14px rgba(255,122,26,0.9)",

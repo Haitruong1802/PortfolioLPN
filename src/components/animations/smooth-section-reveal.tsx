@@ -7,6 +7,7 @@ import {
   useTransform,
   useSpring,
 } from "framer-motion";
+import { useAnimationProfile } from "@/lib/hooks/use-animation-profile";
 
 type Props = {
   children: React.ReactNode;
@@ -42,6 +43,7 @@ export function SmoothSectionReveal({
   opacityEdge = 0.7,
   yEdge = 40,
 }: Props) {
+  const profile = useAnimationProfile();
   const ref = React.useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -85,6 +87,19 @@ export function SmoothSectionReveal({
     damping: 25,
     mass: 0.5,
   });
+
+  // balanced + lite skip the scroll-driven opacity/scale/y transforms.
+  // Otherwise the section starts dim (opacityEdge ~0.7) when below the
+  // viewport and brightens as the user scrolls in - on mobile that read
+  // as 'section is black for a beat then finally appears' because the
+  // dim state was visible during the scroll-in.
+  if (profile !== "full") {
+    return (
+      <div ref={ref} className={className}>
+        {children}
+      </div>
+    );
+  }
 
   return (
     <motion.div
