@@ -18,6 +18,7 @@ import { SectionSpotlight } from "@/components/site/section-spotlight";
 import { LetterReveal } from "@/components/animations/letter-reveal";
 import { ImageGlow } from "@/components/animations/image-glow";
 import { Tilt } from "@/components/animations/tilt";
+import { useAnimationProfile } from "@/lib/hooks/use-animation-profile";
 
 const accentText: Record<string, string> = {
   orange: "text-brand-orange",
@@ -49,6 +50,7 @@ const accentBg: Record<string, string> = {
 
 export function Work() {
   const { locale } = useLocale();
+  const profile = useAnimationProfile();
   const [zoomImg, setZoomImg] = React.useState<{ src: string; alt: string } | null>(null);
   const onZoom = React.useCallback(
     (src: string, alt: string) => setZoomImg({ src, alt }),
@@ -57,15 +59,18 @@ export function Work() {
 
   return (
     <section id="work" className="relative">
-      {/* The sticky-scroll studio kept locking up scroll even on machines
-          we classified as "full" - navigator.hardwareConcurrency reports 8
-          for an i7-7th gen desktop, so a profile guard wasn't catching it.
-          Use the stacked layout for everyone; it's still the original
-          cinematic content (giant index, big card, metrics block) just
-          scrolled natively one after another instead of pinned + cross-
-          faded. WorkStudioReveal stays in the file in case we ever want
-          to bring the sticky version back behind an explicit opt-in. */}
-      <WorkStackedFallback locale={locale} onZoom={onZoom} />
+      {/* Bring the sticky-scroll cinematic studio back for profile=full.
+          The useSpring smoothing was removed from WorkStudioReveal in this
+          same change, so each scroll frame now drives the useTransforms
+          directly off scrollYProgress instead of a per-frame spring step.
+          balanced + lite still fall back to the stacked column (no useScroll
+          at all) - that's the safety net for machines like the i7-7th gen
+          friend tested on. */}
+      {profile === "full" ? (
+        <WorkStudioReveal locale={locale} onZoom={onZoom} />
+      ) : (
+        <WorkStackedFallback locale={locale} onZoom={onZoom} />
+      )}
 
       <WorkZoomModal img={zoomImg} onClose={() => setZoomImg(null)} />
     </section>
@@ -267,12 +272,14 @@ function WorkStudioReveal({
     target: containerRef,
     offset: ["start start", "end end"],
   });
-  // Smooth out scroll for buttery transitions
-  const progress = useSpring(scrollYProgress, {
-    stiffness: 80,
-    damping: 25,
-    mass: 0.5,
-  });
+  // Drive every transform off the raw scrollYProgress. Earlier passes
+  // used a useSpring smoothing layer on top - silky on a strong desktop,
+  // but it forced every one of the 21 transforms below to recompute on
+  // a spring step every frame, which was the actual scroll-locking work
+  // on weak desktops. Without the spring the transforms only fire when
+  // the user is actively scrolling (and at scroll-event cadence, not
+  // every animation frame).
+  const progress = scrollYProgress;
 
   // Intro panel: visible 0-18%, fades out 18-22%
   const introOpacity = useTransform(progress, [0, 0.16, 0.22], [1, 1, 0]);

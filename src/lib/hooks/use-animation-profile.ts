@@ -57,15 +57,15 @@ function detectProfile(): AnimationProfile {
   // Very weak hardware -> lite
   if (cores <= 2 || memory <= 2) return "lite";
 
-  // "full" is reserved for unambiguously strong desktops: >= 12 logical
-  // cores AND >= 16 GB RAM, mouse pointer, large viewport. The earlier
-  // bar of 8 / 8 was matching i7-7th gen office desktops because Intel
-  // hyperthreaded i7s report 8 logical cores even with a relatively
-  // weak Intel HD 630 GPU - and the sticky scroll studio + per-frame
-  // spring updates were enough to lock those machines up.
+  // "full" goes to desktops that can drive the sticky-scroll studio +
+  // the heavy cinema choreography: >= 8 logical cores AND >= 8 GB RAM,
+  // mouse pointer, large viewport. Friend's i7-7th gen machine with
+  // those exact specs hit this bar and locked up - that's now mitigated
+  // by removing useSpring smoothing from WorkStudioReveal so the
+  // per-frame useTransform load is lighter.
   const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
   const smallViewport = window.matchMedia("(max-width: 1024px)").matches;
-  if (cores < 12 || memory < 16 || coarsePointer || smallViewport) {
+  if (cores < 8 || memory < 8 || coarsePointer || smallViewport) {
     return "balanced";
   }
 
