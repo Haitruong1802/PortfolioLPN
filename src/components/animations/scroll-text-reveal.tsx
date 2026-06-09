@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useLowEndDevice } from "@/lib/hooks/use-low-end-device";
 
 type Props = {
   children: string;
@@ -13,7 +14,12 @@ type Props = {
 /**
  * Scroll-driven text reveal: as the user scrolls past the element,
  * each WORD lights up from dim (opacity 0.2) to full opacity, one after another.
- * Inspired by GSAP ScrollTrigger split-text but pure framer-motion.
+ *
+ * Mobile + low-end fast path: a 25-word paragraph becomes 25 motion.span
+ * + 25 useTransform subscriptions on scrollYProgress. Combined with
+ * LetterReveal in the same section, that was 70+ scroll subscriptions
+ * firing as the user scrolled into About - the exact cause of the
+ * "freezes then pops in" hitch on phones. Mobile renders a single fade.
  */
 export function ScrollTextReveal({
   children,
@@ -21,12 +27,38 @@ export function ScrollTextReveal({
   dimColor = "var(--color-muted-foreground)",
 }: Props) {
   const ref = React.useRef<HTMLSpanElement>(null);
+  const lite = useLowEndDevice();
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    setIsMobile(window.matchMedia("(max-width: 767px)").matches);
+  }, []);
+
+  const simplify = lite || isMobile;
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start 0.85", "start 0.2"],
   });
 
   const words = React.useMemo(() => children.split(" "), [children]);
+
+  if (simplify) {
+    return (
+      <motion.span
+        ref={ref}
+        initial={{ opacity: 0, y: 6 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "0px" }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className={className}
+        style={{ display: "inline-block" }}
+      >
+        {children}
+      </motion.span>
+    );
+  }
 
   return (
     <span ref={ref} className={className} style={{ display: "inline-block" }}>
