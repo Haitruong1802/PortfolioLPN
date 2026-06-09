@@ -60,7 +60,7 @@ export function PageEntrance({ children }: { children: React.ReactNode }) {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: ready ? 1 : 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      transition={{ duration: 1.4, ease: "easeOut" }}
     >
       {children}
     </motion.div>
