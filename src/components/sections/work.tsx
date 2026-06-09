@@ -18,6 +18,7 @@ import { SectionSpotlight } from "@/components/site/section-spotlight";
 import { LetterReveal } from "@/components/animations/letter-reveal";
 import { ImageGlow } from "@/components/animations/image-glow";
 import { Tilt } from "@/components/animations/tilt";
+import { useAnimationProfile } from "@/lib/hooks/use-animation-profile";
 
 const accentText: Record<string, string> = {
   orange: "text-brand-orange",
@@ -49,18 +50,53 @@ const accentBg: Record<string, string> = {
 
 export function Work() {
   const { locale } = useLocale();
+  const profile = useAnimationProfile();
   const [zoomImg, setZoomImg] = React.useState<{ src: string; alt: string } | null>(null);
+  const onZoom = React.useCallback(
+    (src: string, alt: string) => setZoomImg({ src, alt }),
+    [],
+  );
 
   return (
     <section id="work" className="relative">
-      {/* Cinematic sticky-scroll storytelling — all section header lives inside intro */}
-      <WorkStudioReveal
-        locale={locale}
-        onZoom={(src, alt) => setZoomImg({ src, alt })}
-      />
+      {/* Cinematic sticky-scroll studio is desktop-full only - it runs a
+          spring-smoothed useScroll + 21 useTransforms on the same value
+          which on weak desktops (i7-7th gen Intel HD 630) was heavy enough
+          to lock the scroll thread at the second contest. balanced + lite
+          get the same stacked layout the mobile viewport already uses. */}
+      {profile === "full" ? (
+        <WorkStudioReveal locale={locale} onZoom={onZoom} />
+      ) : (
+        <WorkStackedFallback locale={locale} onZoom={onZoom} />
+      )}
 
       <WorkZoomModal img={zoomImg} onClose={() => setZoomImg(null)} />
     </section>
+  );
+}
+
+function WorkStackedFallback({
+  locale,
+  onZoom,
+}: {
+  locale: "vi" | "en";
+  onZoom: (src: string, alt: string) => void;
+}) {
+  return (
+    <>
+      <MobileWorkHeader locale={locale} />
+      <div className="container-px mx-auto flex max-w-3xl flex-col gap-10 pb-16">
+        {caseStudies.map((cs, i) => (
+          <MobileContestCard
+            key={cs.slug}
+            cs={cs}
+            index={i + 1}
+            locale={locale}
+            onZoom={onZoom}
+          />
+        ))}
+      </div>
+    </>
   );
 }
 
