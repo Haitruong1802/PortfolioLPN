@@ -43,22 +43,19 @@ export function StickyHireCTA() {
           <Magnetic strength={0.3}>
             <a
               href="#contact"
-              aria-label={locale === "vi" ? "Liên hệ ngay" : "Contact now"}
-              className="group relative inline-flex h-12 items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-brand-orange to-brand-blue px-4 text-xs font-semibold text-white shadow-2xl shadow-brand-orange/30 transition-shadow hover:shadow-brand-blue/50 md:h-14 md:gap-3 md:px-6 md:text-sm"
+              aria-label={locale === "vi" ? "Mời phỏng vấn ngay" : "Schedule interview"}
+              className="group relative inline-flex h-13 items-center justify-center gap-2.5 overflow-hidden rounded-full bg-gradient-to-r from-brand-orange to-brand-blue px-5 text-sm font-semibold text-white shadow-2xl shadow-brand-orange/40 transition-shadow hover:shadow-brand-blue/50 active:scale-[0.97] md:h-14 md:gap-3 md:px-6"
             >
               {/* Pulsing rings */}
               <span
                 aria-hidden
                 className="absolute inset-0 rounded-full ring-2 ring-brand-orange/60 animate-ping-slow"
               />
-              <Phone className="relative h-4 w-4" strokeWidth={2.2} />
-              <span className="relative">
-                {locale === "vi" ? "Liên hệ" : "Contact"}
-                <span className="hidden md:inline">
-                  {locale === "vi" ? " ngay" : " now"}
-                </span>
+              <Phone className="relative h-4 w-4 md:h-4 md:w-4" strokeWidth={2.2} />
+              <span className="relative whitespace-nowrap">
+                {locale === "vi" ? "Mời phỏng vấn" : "Schedule interview"}
               </span>
-              <ArrowRight className="relative hidden h-4 w-4 transition-transform group-hover:translate-x-1 md:inline-block" />
+              <ArrowRight className="relative h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
           </Magnetic>
 

@@ -158,7 +158,6 @@ function WorkZoomModal({
                     height={1200}
                     sizes="(max-width: 768px) 92vw, (max-width: 1280px) 80vw, 80rem"
                     className="block h-auto max-h-[85vh] w-full select-none rounded-2xl object-contain"
-                    priority
                     draggable={false}
                   />
                 </TransformComponent>
@@ -816,7 +815,6 @@ function BigContestStage({
             fill
             sizes={mobile ? "100vw" : "(max-width: 1024px) 100vw, 600px"}
             className="object-contain transition-all duration-700 group-hover:brightness-110"
-            priority={index <= 2}
           />
           {/* Zoom hint */}
           <div className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full bg-black/55 text-white opacity-0 backdrop-blur transition-opacity duration-300 group-hover:opacity-100">
@@ -1350,7 +1348,6 @@ function ChampionCard({
                 fill
                 sizes="(max-width: 1024px) 100vw, 60vw"
                 className="object-cover"
-                priority
               />
             </motion.div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />

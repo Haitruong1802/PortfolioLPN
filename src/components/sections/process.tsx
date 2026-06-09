@@ -1236,7 +1236,6 @@ function ImageZoomModal({
                 height={1200}
                 sizes="(max-width: 768px) 92vw, (max-width: 1280px) 80vw, 80rem"
                 className="block h-auto max-h-[80vh] w-full select-none rounded-2xl object-contain"
-                priority
                 draggable={false}
               />
             </TransformComponent>
