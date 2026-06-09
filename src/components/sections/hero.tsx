@@ -215,9 +215,13 @@ export function Hero() {
                 {profile.tagline[locale]}
               </span>
               <span className="absolute inset-0">
+                {/* speed 24ms × ~110 chars + punctuation pauses ≈ 3s, which
+                    matches the preloader run-time. Typing happens entirely
+                    behind the preloader so the tagline is already fully
+                    written the instant the page becomes visible. */}
                 <TypingText
                   text={profile.tagline[locale]}
-                  speed={38}
+                  speed={24}
                   startDelay={0}
                 />
               </span>
