@@ -10,8 +10,8 @@ const ACT2_AT = 500; // stars converge
 const ACT3_AT = 1600; // GO BIG appears + progress bar fills
 // Real-load gate timings:
 const MIN_HOLD_MS = 2500; // never exit faster than 2.5s
-const MAX_HOLD_MS = 15000; // never block past 15s even if load stalls
-const STABLE_POLLS = 3; // image count must stay still for 3 polls before we trust it
+const MAX_HOLD_MS = 8000; // never block past 8s even if load stalls
+const STABLE_POLLS = 2; // image count must stay still for 2 polls before we trust it
 const FINAL_FLASH_MS = 600; // exit animation duration
 
 /**
@@ -147,8 +147,11 @@ export function Preloader() {
 
       const all = Array.from(document.images);
       const total = all.length;
-      const done = all.filter((img) => img.complete && img.naturalWidth > 0)
-        .length;
+      // img.complete is true after both successful loads AND failed loads
+      // (404, decode error). Counting both keeps the gate from waiting on
+      // an asset that will never resolve. If naturalWidth > 0 we know it
+      // actually decoded; if it's a failed image we still mark "attempted".
+      const done = all.filter((img) => img.complete).length;
       setProgress(total > 0 ? done / total : 0);
 
       // Image count stability: only trust "all done" if the total has been

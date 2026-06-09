@@ -8,46 +8,30 @@ import { Contact } from "@/components/sections/contact";
 import { SkillsMarquee } from "@/components/sections/skills-marquee";
 import { Footer } from "@/components/site/footer";
 import { CurvedDivider } from "@/components/site/curved-divider";
-import { SmoothSectionReveal } from "@/components/animations/smooth-section-reveal";
 
 export default function Home() {
   return (
     <>
       <main>
         {/* ── STORY-FIRST FLOW ──────────────────────────────────────────
-            Reverted to the original narrative order: introduce Nam first,
-            walk through his journey, then close with the proof + CTA.
-
-            Note: tried next/dynamic on below-fold sections to slim the
-            initial bundle, but on real mobile the dynamic-import promises
-            were tripping the root error boundary mid-hydration. Reverted
-            to static imports - the other optimisations (profile system,
-            unused-dep removal, marquee off-screen pause, rAF mousemove)
-            still ship the main perf wins without that risk.
+            Hero → About → Process → Services → Work → Contact.
+            SmoothSectionReveal wrapper removed entirely - it was driving
+            opacity from scroll position with edge=0.7, which read as a
+            black flash on mobile when the section was just below the
+            fold. Sections now render plain; they each handle their own
+            internal whileInView reveals.
         */}
         <Hero />
         <ImageMarquee />
-        {/* About skips SmoothSectionReveal: the section already has its own
-            whileInView reveals, and on mobile the wrapper's scroll-driven
-            opacity dim made the section look blank until intersection fired,
-            then everything popped in at once. */}
         <About />
         <CurvedDivider accent="orange" />
-        <SmoothSectionReveal>
-          <Process />
-        </SmoothSectionReveal>
+        <Process />
         <CurvedDivider accent="blue" flip />
-        <SmoothSectionReveal>
-          <Services />
-        </SmoothSectionReveal>
+        <Services />
         <SkillsMarquee />
-        <SmoothSectionReveal>
-          <Work />
-        </SmoothSectionReveal>
+        <Work />
         <CurvedDivider accent="orange" />
-        <SmoothSectionReveal>
-          <Contact />
-        </SmoothSectionReveal>
+        <Contact />
       </main>
       <Footer />
     </>
