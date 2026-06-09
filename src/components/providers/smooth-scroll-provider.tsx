@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Lenis from "lenis";
+import { useAnimationProfile } from "@/lib/hooks/use-animation-profile";
 
 /**
  * Lenis smooth scroll provider — silky scroll for the whole site.
@@ -9,19 +10,25 @@ import Lenis from "lenis";
  *  - Long duration (1.8s) + custom easing = "luxury" cinema scroll feel
  *  - Anchor link interceptor: <a href="#about"> animates instead of jumping
  *  - Auto-respects `prefers-reduced-motion`
+ *  - Profile-gated: only on "full" (strong desktop). Office machines were
+ *    paying ~4-6ms/frame for Lenis's continuous rAF loop on top of native
+ *    scroll, which the user reported as 100% CPU. Native scroll is already
+ *    smooth - the cinema-grade smoothing isn't worth it on mid-tier specs.
  */
 export function SmoothScrollProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const profile = useAnimationProfile();
+
   React.useEffect(() => {
     if (typeof window === "undefined") return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    // Skip Lenis on small touch devices — silky scroll there fights with the
-    // native momentum + costs ~4-6ms/frame of JS, which was the main cause
-    // of "đơ" on real mobile. Native scroll is already smooth on mobile.
     if (window.matchMedia("(max-width: 767px)").matches) return;
+    // The big one: only run Lenis on profile=full. Balanced + lite use the
+    // browser's native scroll, which costs zero JS per frame.
+    if (profile !== "full") return;
 
     const lenis = new Lenis({
       duration: 1.8, // longer = silkier (was 1.2)
@@ -73,7 +80,7 @@ export function SmoothScrollProvider({
       lenis.destroy();
       document.removeEventListener("click", onAnchorClick);
     };
-  }, []);
+  }, [profile]);
 
   return <>{children}</>;
 }
