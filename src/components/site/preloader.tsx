@@ -9,8 +9,9 @@ const STORAGE_KEY = "portfolio-preloader-seen";
 const ACT2_AT = 500; // stars converge
 const ACT3_AT = 1600; // GO BIG appears + progress bar fills
 // Real-load gate timings:
-const MIN_HOLD_MS = 2500; // never exit faster than 2.5s (let the user see it)
-const MAX_HOLD_MS = 7000; // never block past 7s even if load stalls
+const MIN_HOLD_MS = 2500; // never exit faster than 2.5s
+const MAX_HOLD_MS = 15000; // never block past 15s even if load stalls
+const STABLE_POLLS = 3; // image count must stay still for 3 polls before we trust it
 const FINAL_FLASH_MS = 600; // exit animation duration
 
 /**
@@ -115,26 +116,54 @@ export function Preloader() {
       fontsLoaded = true;
     }
 
-    // Image progress: count from document.images that are already complete.
-    const updateProgress = () => {
-      const all = Array.from(document.images);
-      if (all.length === 0) {
-        setProgress(1);
-        return;
-      }
-      const done = all.filter((img) => img.complete && img.naturalWidth > 0).length;
-      setProgress(done / all.length);
+    // Force ALL images in the document to load eagerly. Next/Image defaults
+    // to lazy via IntersectionObserver - which means below-fold images never
+    // start fetching until the user scrolls into them. Without this step the
+    // preloader thinks "all images complete" the moment Hero portrait lands,
+    // exits, and the user sees the rest of the page populating + shifting
+    // as they scroll down. Calling this on every poll catches any new images
+    // React mounts after the first frame.
+    const forceEager = () => {
+      const imgs = document.querySelectorAll<HTMLImageElement>("img");
+      imgs.forEach((img) => {
+        if (img.loading === "lazy") {
+          img.loading = "eager";
+          // fetchpriority hint - some browsers honour this for the queue order.
+          img.setAttribute("fetchpriority", "high");
+        }
+      });
     };
-    updateProgress();
+    forceEager();
 
-    // Poll image progress every 200ms. Cheap and accurate enough for a
-    // visual progress bar; we tear it down as soon as we exit.
-    const progressTimer = window.setInterval(updateProgress, 200);
+    // Track image-count stability so we don't exit while React is still
+    // mounting more <img> nodes.
+    let lastImgCount = -1;
+    let stablePolls = 0;
 
-    // Single gate ticker: every 100ms decide whether to exit.
+    // Single gate ticker: every 200ms (a) force eager on any new images,
+    // (b) update progress, (c) decide whether to exit.
     const gateTimer = window.setInterval(() => {
+      forceEager();
+
+      const all = Array.from(document.images);
+      const total = all.length;
+      const done = all.filter((img) => img.complete && img.naturalWidth > 0)
+        .length;
+      setProgress(total > 0 ? done / total : 0);
+
+      // Image count stability: only trust "all done" if the total has been
+      // unchanged for at least STABLE_POLLS in a row.
+      if (total === lastImgCount) {
+        stablePolls++;
+      } else {
+        stablePolls = 0;
+        lastImgCount = total;
+      }
+      const stable = stablePolls >= STABLE_POLLS;
+      const allImagesLoaded = total > 0 && done === total;
+
       const elapsed = performance.now() - startedAt;
-      const ready = windowLoaded && fontsLoaded;
+      const ready = windowLoaded && fontsLoaded && allImagesLoaded && stable;
       const minHeld = elapsed >= MIN_HOLD_MS;
       const maxHeld = elapsed >= MAX_HOLD_MS;
 
@@ -146,15 +175,13 @@ export function Preloader() {
           sessionStorage.setItem(STORAGE_KEY, "1");
         }, FINAL_FLASH_MS);
         window.clearInterval(gateTimer);
-        window.clearInterval(progressTimer);
       }
-    }, 100);
+    }, 200);
 
     return () => {
       window.clearTimeout(t2);
       window.clearTimeout(t3);
       window.clearInterval(gateTimer);
-      window.clearInterval(progressTimer);
       window.removeEventListener("load", onLoad);
       document.body.style.overflow = "";
     };
