@@ -392,7 +392,9 @@ function ParticlesBackground() {
     if (typeof window === "undefined") return;
     setIsMobile(window.matchMedia("(max-width: 767px)").matches);
   }, []);
-  if (lite || isMobile) return null;
+  // All hooks must run before any early return - otherwise React sees a
+  // different hook count between renders and throws "Rendered fewer hooks
+  // than expected". useMemo first, conditional render second.
   // 30 deterministic positions (no Math.random for SSR stability)
   const particles = React.useMemo(
     () =>
@@ -407,6 +409,7 @@ function ParticlesBackground() {
       })),
     [],
   );
+  if (lite || isMobile) return null;
 
   return (
     <div
