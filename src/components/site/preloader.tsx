@@ -5,43 +5,59 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useLowEndDevice } from "@/lib/hooks/use-low-end-device";
 
 const STORAGE_KEY = "portfolio-preloader-seen";
-const TOTAL_DURATION = 3200; // 3.2s smoother
+// Cinematic act timings (fixed):
+const ACT2_AT = 500; // stars converge
+const ACT3_AT = 1600; // GO BIG appears + progress bar fills
+// Real-load gate timings:
+const MIN_HOLD_MS = 2500; // never exit faster than 2.5s (let the user see it)
+const MAX_HOLD_MS = 7000; // never block past 7s even if load stalls
+const FINAL_FLASH_MS = 600; // exit animation duration
 
 /**
- * Cinematic preloader — 4 cohesive acts, 3.2s total.
+ * Cinematic preloader that waits for the actual page load before revealing.
  *
- * Act 1 (0 – 0.5s)  — "Ignition": Scanline draws + 1 spark grows
- * Act 2 (0.5 – 1.6s) — "Inhale": 200 stars converge inward (cinematic depth)
- * Act 3 (1.6 – 2.6s) — "Reveal": "GO BIG OR GO HOME" materializes letter-by-letter
- *                                 Loading bar fills underneath in parallel
- * Act 4 (2.6 – 3.2s) — "Liftoff": Ring expand + final flash
- * Exit (3.2 – 4.0s) — Scale 1.5 + blur 25 → page emerges
+ * Previous version exited on a fixed 3.2s timer regardless of whether the
+ * page was ready. On mobile that meant the preloader stepped aside while
+ * images, fonts, and JS chunks were still streaming, so the user saw
+ * elements jumping into place as they scrolled - the "load không hết"
+ * report.
+ *
+ * Now the exit is gated by THREE conditions, all of which must be true:
+ *   1) Cinematic acts have played past Act 3 (so the brand reveal lands).
+ *   2) Minimum hold time has elapsed (so it doesn't flash by on fast networks).
+ *   3) The page is actually ready: window load fired AND fonts loaded.
+ * A failsafe maximum hold of 7s guarantees we never trap the user if
+ * something stalls (slow third-party script, broken image, etc.).
+ *
+ * Progress bar reflects real image-load progress so the user has a hint
+ * of why we're waiting rather than just a sitting-there bar.
  */
 export function Preloader() {
   const lite = useLowEndDevice();
   const [visible, setVisible] = React.useState(true);
   const [phase, setPhase] = React.useState<1 | 2 | 3 | 4>(1);
+  const [progress, setProgress] = React.useState(0); // 0..1 image-load progress
   const [stars, setStars] = React.useState<
     Array<{ id: number; tx: number; ty: number; delay: number; size: number; color: string }>
   >([]);
 
   React.useEffect(() => {
+    // Already-seen this session -> reveal page immediately (no second tax)
     if (sessionStorage.getItem(STORAGE_KEY) === "1") {
       setVisible(false);
       return;
     }
 
-    // Low-end devices skip the preloader cinema entirely - just mark it
-    // "seen" and reveal the page immediately. 3.2s of star animation was
-    // crashing the office machine before content ever rendered.
+    // Low-end devices skip the cinematic entirely.
     if (lite) {
       sessionStorage.setItem(STORAGE_KEY, "1");
       setVisible(false);
       return;
     }
 
-    // 200 was punishing on weak office machines. 80 keeps the cosmic feel
-    // and drops to 40 on mobile where each particle costs more relatively.
+    document.body.style.overflow = "hidden";
+
+    // Build star field. 80 desktop / 40 mobile - same as before.
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
     const starCount = isMobile ? 40 : 80;
     setStars(
@@ -66,21 +82,85 @@ export function Preloader() {
       }),
     );
 
-    const t1 = setTimeout(() => setPhase(2), 500);
-    const t2 = setTimeout(() => setPhase(3), 1600);
-    const t3 = setTimeout(() => setPhase(4), 2600);
-    const tEnd = setTimeout(() => {
-      setVisible(false);
-      sessionStorage.setItem(STORAGE_KEY, "1");
-    }, TOTAL_DURATION);
+    const startedAt = performance.now();
 
-    document.body.style.overflow = "hidden";
+    // Cinematic phases on a fixed schedule.
+    const t2 = window.setTimeout(() => setPhase(2), ACT2_AT);
+    const t3 = window.setTimeout(() => setPhase(3), ACT3_AT);
+
+    // Track actual page-load completion.
+    let windowLoaded = document.readyState === "complete";
+    let fontsLoaded = false;
+
+    const onLoad = () => {
+      windowLoaded = true;
+    };
+    if (!windowLoaded) {
+      window.addEventListener("load", onLoad, { once: true });
+    }
+
+    if (
+      typeof document !== "undefined" &&
+      (document as Document & { fonts?: FontFaceSet }).fonts
+    ) {
+      (document as Document & { fonts: FontFaceSet }).fonts.ready
+        .then(() => {
+          fontsLoaded = true;
+        })
+        .catch(() => {
+          // No-op: if Font Loading API errors, we still exit on the other gates.
+          fontsLoaded = true;
+        });
+    } else {
+      fontsLoaded = true;
+    }
+
+    // Image progress: count from document.images that are already complete.
+    const updateProgress = () => {
+      const all = Array.from(document.images);
+      if (all.length === 0) {
+        setProgress(1);
+        return;
+      }
+      const done = all.filter((img) => img.complete && img.naturalWidth > 0).length;
+      setProgress(done / all.length);
+    };
+    updateProgress();
+
+    // Poll image progress every 200ms. Cheap and accurate enough for a
+    // visual progress bar; we tear it down as soon as we exit.
+    const progressTimer = window.setInterval(updateProgress, 200);
+
+    // Single gate ticker: every 100ms decide whether to exit.
+    const gateTimer = window.setInterval(() => {
+      const elapsed = performance.now() - startedAt;
+      const ready = windowLoaded && fontsLoaded;
+      const minHeld = elapsed >= MIN_HOLD_MS;
+      const maxHeld = elapsed >= MAX_HOLD_MS;
+
+      if ((ready && minHeld) || maxHeld) {
+        setPhase(4);
+        // Fire-and-forget cleanup; the AnimatePresence exit handles fade.
+        window.setTimeout(() => {
+          setVisible(false);
+          sessionStorage.setItem(STORAGE_KEY, "1");
+        }, FINAL_FLASH_MS);
+        window.clearInterval(gateTimer);
+        window.clearInterval(progressTimer);
+      }
+    }, 100);
+
     return () => {
-      [t1, t2, t3, tEnd].forEach(clearTimeout);
+      window.clearTimeout(t2);
+      window.clearTimeout(t3);
+      window.clearInterval(gateTimer);
+      window.clearInterval(progressTimer);
+      window.removeEventListener("load", onLoad);
       document.body.style.overflow = "";
     };
   }, [lite]);
 
+  // Failsafe: if visible flips false for any reason, unlock scroll.
   React.useEffect(() => {
     if (!visible) document.body.style.overflow = "";
   }, [visible]);
@@ -205,7 +285,9 @@ export function Preloader() {
             </div>
           )}
 
-          {/* Loading bar (Act 3+) — slides in from bottom */}
+          {/* Loading bar (Act 3+) — width follows real image-load progress.
+              clamp(0.05) so the bar always shows a sliver even on first
+              paint (otherwise it looks broken). */}
           {phase >= 3 && (
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -219,14 +301,10 @@ export function Preloader() {
                 </span>
                 <div className="h-[2px] w-56 overflow-hidden rounded-full bg-white/10">
                   <motion.div
-                    initial={{ scaleX: 0, originX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{
-                      duration: 1.4,
-                      delay: 0.3,
-                      ease: [0.65, 0, 0.35, 1],
-                    }}
-                    className="h-full w-full"
+                    className="h-full"
+                    initial={false}
+                    animate={{ width: `${Math.max(5, Math.round(progress * 100))}%` }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
                     style={{
                       background:
                         "linear-gradient(to right, #ff7a1a, #ffffff, #2f7dff)",
@@ -235,7 +313,9 @@ export function Preloader() {
                   />
                 </div>
                 <span className="font-mono text-[9px] uppercase tracking-wider text-white/55">
-                  100
+                  {Math.round(progress * 100)
+                    .toString()
+                    .padStart(3, "0")}
                 </span>
               </div>
             </motion.div>
