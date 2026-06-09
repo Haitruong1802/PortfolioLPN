@@ -81,6 +81,9 @@ export function Cursor() {
 
   return (
     <>
+      {/* Only hide the system cursor while the custom one is actually
+          rendering. The cursor-none rule lives inline (not in globals.css)
+          so any branch that returns null above keeps the system cursor. */}
       <style>{`html, body { cursor: none; } a, button, [role="button"] { cursor: none; }`}</style>
 
       {/* Ring — outer motion follows cursor, inner CSS-translate centers */}

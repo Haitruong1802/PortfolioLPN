@@ -26,7 +26,14 @@ export function useInViewport<T extends Element>(
   opts: Options = {},
 ): boolean {
   const { rootMargin = "0px", threshold = 0, once = false } = opts;
-  const [inView, setInView] = React.useState(false);
+  // Default to true (in-view) so consumers that gate an animation on this
+  // flag start playing immediately. The previous default of false meant
+  // every off-screen optimisation gate was treated as "off-screen" until
+  // the first IntersectionObserver callback arrived - which on weak
+  // machines can be 100-500ms after mount, long enough that the user sees
+  // the marquees just sitting there. The observer still flips this to
+  // false the moment the element actually leaves the viewport.
+  const [inView, setInView] = React.useState(true);
 
   React.useEffect(() => {
     const el = ref.current;
