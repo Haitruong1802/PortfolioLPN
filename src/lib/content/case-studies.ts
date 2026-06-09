@@ -38,7 +38,7 @@ export const caseStudies: CaseStudy[] = [
     tags: ["Startup", "UEH", "Pitching", "Team Lead"],
     accent: "orange",
     image: "/awards/startup-zone-2025.jpg",
-    imageAlt: "The Igniters team — Startup Zone 2025 Gala Finalists",
+    imageAlt: "Đội The Igniters — Top 5 Gala Chung Kết Startup Zone 2025",
     imageAspect: "1/1",
   },
   {
@@ -62,7 +62,7 @@ export const caseStudies: CaseStudy[] = [
     tags: ["Tech Startup", "TIKERA", "Innovation"],
     accent: "blue",
     image: "/awards/techseed-2025.jpg",
-    imageAlt: "Techseed 2025 Top 20 certificate — BETA-CAREER",
+    imageAlt: "Giấy chứng nhận Top 20 Techseed 2025 — đội BETA-CAREER",
     imageAspect: "7/5",
   },
   {

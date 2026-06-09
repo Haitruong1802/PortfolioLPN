@@ -743,7 +743,7 @@ const SINTECH_TASKS: SintechTask[] = [
       desc: "Managed Sintech PC Gaming & Gear fanpage with over 7,000 followers. Planned regular content, tracked engagement insights, and coordinated with designers and PMs to maintain a consistent brand voice.",
     },
     images: [
-      { src: "/experience/sintech/fanpage.png", alt: "Sintech PC Gaming & Gear fanpage — 7K followers" },
+      { src: "/experience/sintech/fanpage.png", alt: "Fanpage Sintech PC Gaming & Gear — 7K theo dõi" },
     ],
     imgAspect: "aspect-[4/3]",
     cols: 1,
@@ -760,7 +760,7 @@ const SINTECH_TASKS: SintechTask[] = [
       desc: "Produced weekly posts following the content calendar, including product introductions, promotions, and hardware education. Optimised opening hooks and closing CTAs for organic engagement.",
     },
     images: [
-      { src: "/experience/sintech/fb-content.png", alt: "Sintech fanpage content samples" },
+      { src: "/experience/sintech/fb-content.png", alt: "Mẫu bài đăng nội dung trên fanpage Sintech" },
     ],
     imgAspect: "aspect-[4/3]",
     cols: 1,
@@ -777,9 +777,9 @@ const SINTECH_TASKS: SintechTask[] = [
       desc: "Reviewed sintech.vn interface, recommended updates to product thumbnails, homepage banners, and category layouts to improve customer shopping experience.",
     },
     images: [
-      { src: "/experience/sintech/uxui-1.jpg", alt: "Sintech website UX/UI 1" },
-      { src: "/experience/sintech/uxui-2.jpg", alt: "Sintech website UX/UI 2" },
-      { src: "/experience/sintech/uxui-3.jpg", alt: "Sintech website UX/UI 3" },
+      { src: "/experience/sintech/uxui-1.jpg", alt: "Giao diện website sintech.vn 1" },
+      { src: "/experience/sintech/uxui-2.jpg", alt: "Giao diện website sintech.vn 2" },
+      { src: "/experience/sintech/uxui-3.jpg", alt: "Giao diện website sintech.vn 3" },
     ],
     imgAspect: "aspect-[16/10]",
     cols: 3,
@@ -799,37 +799,37 @@ const SINTECH_TASKS: SintechTask[] = [
       // Row 1 — analytics dashboard (full-width landscape)
       {
         src: "/experience/sintech/seo-6.jpg",
-        alt: "SEO analytics dashboard — Sintech blog performance",
+        alt: "Dashboard phân tích SEO — hiệu suất blog Sintech",
         aspect: "aspect-[2/1]",
         spanFull: true,
       },
       // Rows 2-4 — CMS article lists (each full-width landscape)
       {
         src: "/experience/sintech/seo-1.jpg",
-        alt: "SEO articles list 1 — Sintech blog CMS",
+        alt: "Danh sách bài SEO 1 — CMS blog Sintech",
         aspect: "aspect-[2/1]",
         spanFull: true,
       },
       {
         src: "/experience/sintech/seo-2.jpg",
-        alt: "SEO articles list 2 — Sintech blog CMS",
+        alt: "Danh sách bài SEO 2 — CMS blog Sintech",
         aspect: "aspect-[2/1]",
         spanFull: true,
       },
       {
         src: "/experience/sintech/seo-3.jpg",
-        alt: "SEO articles list 3 — Sintech blog CMS",
+        alt: "Danh sách bài SEO 3 — CMS blog Sintech",
         aspect: "aspect-[2/1]",
         spanFull: true,
       },
       // Row 5 — 2 blog post pages side-by-side
       {
         src: "/experience/sintech/seo-4.jpg",
-        alt: "Blog article — NPU là gì? Vì sao PC 2025 cần có NPU",
+        alt: "Bài blog — NPU là gì? Vì sao PC 2025 cần có NPU",
       },
       {
         src: "/experience/sintech/seo-5.jpg",
-        alt: "Blog article — Copilot+ PC là gì?",
+        alt: "Bài blog — Copilot+ PC là gì?",
       },
     ],
     imgAspect: "aspect-[4/3]",
