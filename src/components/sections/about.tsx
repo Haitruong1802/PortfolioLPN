@@ -39,10 +39,10 @@ export function About() {
             key={chip.en}
             initial={{ opacity: 0, y: 12, scale: 0.8 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, margin: "-40px" }}
+            viewport={{ once: true, margin: "200px 0px" }}
             transition={{
-              delay: 0.1 + i * 0.08,
-              duration: 0.5,
+              delay: i * 0.05,
+              duration: 0.4,
               ease: [0.22, 1, 0.36, 1],
             }}
             className={cn(
@@ -99,7 +99,7 @@ export function About() {
       <motion.figure
         initial={{ opacity: 0, scale: 0.96 }}
         whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true, margin: "0px" }}
+        viewport={{ once: true, margin: "200px 0px" }}
         transition={{ duration: 0.8, delay: 0.2 }}
         className="relative my-20 overflow-hidden py-8 sm:py-12 md:py-16"
       >
@@ -125,7 +125,7 @@ export function About() {
           <motion.span
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "0px" }}
+            viewport={{ once: true, margin: "200px 0px" }}
             transition={{ duration: 0.7, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
             className="block whitespace-nowrap text-go-big"
             style={{ fontSize: "clamp(2.5rem, 10vw, 7rem)" }}
@@ -135,7 +135,7 @@ export function About() {
           <motion.span
             initial={{ opacity: 0, scale: 0.7 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "0px" }}
+            viewport={{ once: true, margin: "200px 0px" }}
             transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="block whitespace-nowrap text-go-or my-1"
             style={{ fontSize: "clamp(1.25rem, 5vw, 3.5rem)" }}
@@ -145,7 +145,7 @@ export function About() {
           <motion.span
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "0px" }}
+            viewport={{ once: true, margin: "200px 0px" }}
             transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="block whitespace-nowrap text-go-home"
             style={{ fontSize: "clamp(2.5rem, 10vw, 7rem)" }}
@@ -162,7 +162,7 @@ export function About() {
         <motion.p
           initial={{ opacity: 0, x: 20 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "0px" }}
+          viewport={{ once: true, margin: "200px 0px" }}
           transition={{ duration: 0.6, delay: 1.2 }}
           className="mt-8 flex items-center justify-end gap-2 font-display text-base italic text-foreground/70 sm:text-lg"
         >
@@ -189,7 +189,7 @@ function CommitmentCloser({ label, text }: { label: string; text: string }) {
     <motion.div
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px" }}
+      viewport={{ once: true, margin: "200px 0px" }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       className="relative mx-auto mt-6 max-w-4xl text-center"
     >
@@ -203,7 +203,7 @@ function CommitmentCloser({ label, text }: { label: string; text: string }) {
       <motion.div
         initial={{ opacity: 0, scaleX: 0.6 }}
         whileInView={{ opacity: 1, scaleX: 1 }}
-        viewport={{ once: true, margin: "0px" }}
+        viewport={{ once: true, margin: "200px 0px" }}
         transition={{ duration: 0.7, delay: 0.1 }}
         className="mb-10 flex items-center justify-center gap-4"
       >
@@ -225,7 +225,7 @@ function CommitmentCloser({ label, text }: { label: string; text: string }) {
         aria-hidden
         initial={{ opacity: 0, scale: 0.5, rotate: -15 }}
         whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-        viewport={{ once: true, margin: "0px" }}
+        viewport={{ once: true, margin: "200px 0px" }}
         transition={{
           duration: 0.9,
           delay: 0.2,
@@ -242,7 +242,7 @@ function CommitmentCloser({ label, text }: { label: string; text: string }) {
       <motion.blockquote
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "0px" }}
+        viewport={{ once: true, margin: "200px 0px" }}
         transition={{ duration: 0.9, delay: 0.35 }}
         className="-mt-6 px-2 font-display italic leading-[1.4] text-foreground sm:leading-[1.45]"
         style={{ fontSize: "clamp(1.125rem, 2.4vw, 1.625rem)" }}
@@ -254,7 +254,7 @@ function CommitmentCloser({ label, text }: { label: string; text: string }) {
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "0px" }}
+        viewport={{ once: true, margin: "200px 0px" }}
         transition={{ duration: 0.7, delay: 0.6 }}
         className="mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4"
       >
@@ -262,7 +262,7 @@ function CommitmentCloser({ label, text }: { label: string; text: string }) {
           aria-hidden
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
-          viewport={{ once: true, margin: "0px" }}
+          viewport={{ once: true, margin: "200px 0px" }}
           transition={{ duration: 0.9, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="h-px w-12 origin-right bg-gradient-to-r from-transparent to-brand-orange sm:w-20"
         />
@@ -276,7 +276,7 @@ function CommitmentCloser({ label, text }: { label: string; text: string }) {
           aria-hidden
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
-          viewport={{ once: true, margin: "0px" }}
+          viewport={{ once: true, margin: "200px 0px" }}
           transition={{ duration: 0.9, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="h-px w-12 origin-left bg-gradient-to-l from-transparent to-brand-blue sm:w-20"
         />
@@ -324,7 +324,7 @@ function StoryBlock({
     <motion.div
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px" }}
+      viewport={{ once: true, margin: "200px 0px" }}
       transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -4 }}
       className={cn(
