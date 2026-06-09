@@ -3,7 +3,7 @@
 import * as React from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, AnimatePresence, MotionConfig, useScroll, useTransform, useSpring } from "framer-motion";
 import { Trophy, X, ZoomIn, Award, Medal } from "lucide-react";
 import {
   TransformWrapper,
@@ -79,8 +79,16 @@ function WorkStackedFallback({
   locale: "vi" | "en";
   onZoom: (src: string, alt: string) => void;
 }) {
+  // Locally opt back into per-card entrance animations. The root layout
+  // wraps the app in MotionConfig reducedMotion='always' to flatten the
+  // heaviest scroll-driven choreography on weak machines - that's the
+  // right global default, but it also flattens the simple opacity+y fade
+  // each contest card uses on entry, which is what the user wanted to
+  // keep. Override locally to reducedMotion='user' so MobileContestCard's
+  // whileInView reveal plays normally (still cheap: opacity+transform
+  // only, one-shot per card, no continuous loops). */
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <MobileWorkHeader locale={locale} />
       <div className="container-px mx-auto flex max-w-3xl flex-col gap-10 pb-16">
         {caseStudies.map((cs, i) => (
@@ -93,7 +101,7 @@ function WorkStackedFallback({
           />
         ))}
       </div>
-    </>
+    </MotionConfig>
   );
 }
 
