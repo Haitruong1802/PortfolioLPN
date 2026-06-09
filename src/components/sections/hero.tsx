@@ -47,17 +47,41 @@ export function Hero() {
     setIsMobile(window.matchMedia("(max-width: 767px)").matches);
   }, []);
 
-  // Scroll-driven exit
+  // Scroll-driven exit transforms - these subscribe to window scroll and
+  // recompute every frame. On a balanced / lite profile we keep the values
+  // as fixed motion values pointing at their idle state so the markup
+  // stays identical (no conditional rendering) but the per-frame work is
+  // effectively zero.
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.7, 1], [1, 0.6, 0]);
-  const contentScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
-  const blurAmount = useTransform(scrollYProgress, [0, 1], [0, 6]);
+  const contentY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    animProfile === "full" ? ["0%", "-30%"] : ["0%", "0%"],
+  );
+  const contentOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.7, 1],
+    animProfile === "full" ? [1, 0.6, 0] : [1, 1, 1],
+  );
+  const contentScale = useTransform(
+    scrollYProgress,
+    [0, 1],
+    animProfile === "full" ? [1, 0.92] : [1, 1],
+  );
+  const blurAmount = useTransform(
+    scrollYProgress,
+    [0, 1],
+    animProfile === "full" ? [0, 6] : [0, 0],
+  );
   const blur = useTransform(blurAmount, (v) => `blur(${v}px)`);
-  const portraitY = useTransform(scrollYProgress, [0, 1], ["0%", "-25%"]);
+  const portraitY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    animProfile === "full" ? ["0%", "-25%"] : ["0%", "0%"],
+  );
 
   return (
     <section
