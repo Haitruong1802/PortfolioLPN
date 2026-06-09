@@ -30,10 +30,27 @@ const isFinePointer = () => {
 
 /**
  * 3D tilt wrapper — rotates children based on cursor position.
- * Spring-damped for silky smoothness. Optional cursor-following glare.
- * Touch devices: no-op.
+ *
+ * Shell + core split: TiltCore owns all the motion-value hooks and the
+ * `motion.div` wrapper. On touch / coarse-pointer devices we never mount
+ * TiltCore, so weak machines skip the 11 motion subscriptions per Tilt
+ * instance entirely (the page has 20+ Tilt usages — that adds up).
  */
-export function Tilt({
+export function Tilt(props: TiltProps) {
+  const [enabled, setEnabled] = React.useState(false);
+
+  React.useEffect(() => {
+    setEnabled(isFinePointer());
+  }, []);
+
+  if (!enabled) {
+    return <div className={cn("relative", props.className)}>{props.children}</div>;
+  }
+
+  return <TiltCore {...props} />;
+}
+
+function TiltCore({
   children,
   max = 8,
   perspective = 1000,
@@ -42,7 +59,6 @@ export function Tilt({
   className,
 }: TiltProps) {
   const ref = React.useRef<HTMLDivElement>(null);
-  const [enabled, setEnabled] = React.useState(false);
   const [hover, setHover] = React.useState(false);
 
   const mx = useMotionValue(0);
@@ -59,12 +75,7 @@ export function Tilt({
   const glareY = useTransform(sy, [-0.5, 0.5], ["0%", "100%"]);
   const glareBg = useMotionTemplate`radial-gradient(ellipse 75% 60% at ${glareX} ${glareY}, rgba(255,255,255,0.35) 0%, transparent 55%)`;
 
-  React.useEffect(() => {
-    setEnabled(isFinePointer());
-  }, []);
-
   const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!enabled) return;
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -72,9 +83,7 @@ export function Tilt({
     my.set((e.clientY - rect.top) / rect.height - 0.5);
   };
 
-  const handleEnter = () => {
-    if (enabled) setHover(true);
-  };
+  const handleEnter = () => setHover(true);
 
   const handleLeave = () => {
     setHover(false);
@@ -85,27 +94,23 @@ export function Tilt({
   return (
     <motion.div
       ref={ref}
-      onMouseMove={enabled ? handleMove : undefined}
-      onMouseEnter={enabled ? handleEnter : undefined}
-      onMouseLeave={enabled ? handleLeave : undefined}
-      style={
-        enabled
-          ? {
-              rotateX,
-              rotateY,
-              transformPerspective: perspective,
-              transformStyle: "flat",
-              // Hover-lift toward camera (z-axis) for "popping out" effect
-              ...(lift && hover ? { z: 30 } : {}),
-            }
-          : undefined
-      }
+      onMouseMove={handleMove}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+      style={{
+        rotateX,
+        rotateY,
+        transformPerspective: perspective,
+        transformStyle: "flat",
+        // Hover-lift toward camera (z-axis) for "popping out" effect
+        ...(lift && hover ? { z: 30 } : {}),
+      }}
       className={cn("relative", className)}
     >
       {children}
 
       {/* Cursor-following glare — clipped by parent's overflow-hidden + rounded */}
-      {glare && enabled && (
+      {glare && (
         <motion.div
           aria-hidden
           animate={{ opacity: hover ? 1 : 0 }}

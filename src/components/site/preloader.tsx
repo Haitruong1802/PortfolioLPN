@@ -29,8 +29,12 @@ export function Preloader() {
       return;
     }
 
+    // 200 was punishing on weak office machines. 80 keeps the cosmic feel
+    // and drops to 40 on mobile where each particle costs more relatively.
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    const starCount = isMobile ? 40 : 80;
     setStars(
-      Array.from({ length: 200 }, (_, i) => {
+      Array.from({ length: starCount }, (_, i) => {
         const angle = Math.random() * Math.PI * 2;
         const distance = 80 + Math.random() * 80;
         const colorRand = Math.random();

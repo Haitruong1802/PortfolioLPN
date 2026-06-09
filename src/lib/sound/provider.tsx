@@ -51,7 +51,10 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
       new Promise((resolve) => {
         try {
           const audio = new Audio(src);
-          audio.preload = "auto";
+          // metadata only - don't preload the 4.2MB MP3 until the user
+          // actually clicks the music toggle. play() handles loading
+          // on demand.
+          audio.preload = "metadata";
           audio.loop = true;
           audio.volume = 0;
           let settled = false;
@@ -223,7 +226,7 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
     if (!audioElRef.current) {
       try {
         const audio = new Audio("/music/portfolio-bgm.mp3");
-        audio.preload = "auto";
+        audio.preload = "metadata";
         audio.loop = true;
         audio.volume = 0;
         audioElRef.current = audio;
