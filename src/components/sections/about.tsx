@@ -98,7 +98,7 @@ export function About() {
       <motion.figure
         initial={{ opacity: 0, scale: 0.96 }}
         whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true, margin: "-80px" }}
+        viewport={{ once: true, margin: "0px" }}
         transition={{ duration: 0.8, delay: 0.2 }}
         className="relative my-20 overflow-hidden py-8 sm:py-12 md:py-16"
       >
@@ -122,30 +122,30 @@ export function About() {
         {/* GO BIG / OR / GO HOME — 3 dòng giống Hero, blur slide-in stagger */}
         <h3 className="mt-6 font-display font-extrabold leading-[0.92] tracking-tight">
           <motion.span
-            initial={{ opacity: 0, x: -40, filter: "blur(8px)" }}
-            whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "0px" }}
+            transition={{ duration: 0.7, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
             className="block whitespace-nowrap text-go-big"
             style={{ fontSize: "clamp(2.5rem, 10vw, 7rem)" }}
           >
             GO BIG
           </motion.span>
           <motion.span
-            initial={{ opacity: 0, scale: 0.6, filter: "blur(8px)" }}
-            whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ opacity: 0, scale: 0.7 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "0px" }}
+            transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="block whitespace-nowrap text-go-or my-1"
             style={{ fontSize: "clamp(1.25rem, 5vw, 3.5rem)" }}
           >
             OR
           </motion.span>
           <motion.span
-            initial={{ opacity: 0, x: 40, filter: "blur(8px)" }}
-            whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.9, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "0px" }}
+            transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="block whitespace-nowrap text-go-home"
             style={{ fontSize: "clamp(2.5rem, 10vw, 7rem)" }}
           >
@@ -188,7 +188,7 @@ function CommitmentCloser({ label, text }: { label: string; text: string }) {
     <motion.div
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, margin: "0px" }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       className="relative mx-auto mt-6 max-w-4xl text-center"
     >

@@ -20,9 +20,11 @@ export default function Home() {
         */}
         <Hero />
         <ImageMarquee />
-        <SmoothSectionReveal>
-          <About />
-        </SmoothSectionReveal>
+        {/* About skips SmoothSectionReveal: the section already has its own
+            whileInView reveals, and on mobile the wrapper's scroll-driven
+            opacity dim made the section look blank until intersection fired,
+            then everything popped in at once. */}
+        <About />
         <CurvedDivider accent="orange" />
         <SmoothSectionReveal>
           <Process />
