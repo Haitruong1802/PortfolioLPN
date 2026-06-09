@@ -1017,7 +1017,6 @@ function SintechTaskSection({
               : ""
           : "";
         return (
-          <Tilt key={img.src} max={6} glare className={cn("rounded-lg", spanClass)}>
           <motion.button
             key={img.src}
             type="button"
@@ -1057,7 +1056,6 @@ function SintechTaskSection({
               <Eye className="h-3 w-3" />
             </div>
           </motion.button>
-          </Tilt>
         );
       })}
     </div>

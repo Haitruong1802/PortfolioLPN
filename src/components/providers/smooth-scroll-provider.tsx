@@ -18,6 +18,10 @@ export function SmoothScrollProvider({
   React.useEffect(() => {
     if (typeof window === "undefined") return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Skip Lenis on small touch devices — silky scroll there fights with the
+    // native momentum + costs ~4-6ms/frame of JS, which was the main cause
+    // of "đơ" on real mobile. Native scroll is already smooth on mobile.
+    if (window.matchMedia("(max-width: 767px)").matches) return;
 
     const lenis = new Lenis({
       duration: 1.8, // longer = silkier (was 1.2)
