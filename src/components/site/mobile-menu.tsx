@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { createPortal } from "react-dom";
-import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useLocale } from "@/lib/i18n/provider";
 import { profile } from "@/lib/content/profile";
@@ -10,12 +9,31 @@ import { LinkedInIcon, FacebookIcon } from "@/components/icons/social";
 import { MusicToggle } from "./music-toggle";
 import { SoundToggle } from "./sound-toggle";
 import { ThemeToggle } from "./theme-toggle";
+import { cn } from "@/lib/utils";
 
 const socialList = [
   { href: profile.socials.linkedin, icon: LinkedInIcon, label: "LinkedIn" },
   { href: profile.socials.facebook, icon: FacebookIcon, label: "Facebook" },
 ];
 
+/**
+ * Mobile menu drawer.
+ *
+ * Previously built on framer-motion (AnimatePresence + motion.divs for
+ * backdrop, drawer and 6 staggered nav links). On weak phones the user
+ * reported the button "khựng" - sometimes the tap registered, sometimes
+ * it didn't, sometimes the whole UI froze. Causes:
+ *   - the root MotionConfig sets reducedMotion='always' on most non-full
+ *     profiles, so AnimatePresence was being asked to play instant
+ *     entrance/exit transitions; if the user double-tapped during an
+ *     exit it would block the next enter.
+ *   - portal-mounting 8 motion components per toggle is heavy.
+ * Replaced with plain CSS transitions (transform on the drawer, opacity
+ * on the backdrop). The drawer stays in the DOM after first open so the
+ * second toggle is just a class flip - no portal mount, no Framer Motion
+ * reconciliation, no chance of getting wedged between an enter and an
+ * exit. Buttons stay responsive.
+ */
 export function MobileMenu() {
   const { t, locale } = useLocale();
   const [open, setOpen] = React.useState(false);
@@ -56,32 +74,38 @@ export function MobileMenu() {
         type="button"
         onClick={() => setOpen(true)}
         aria-label="Open menu"
-        className="grid h-9 w-9 place-items-center rounded-full border border-border text-foreground transition-colors hover:bg-muted md:hidden"
+        aria-expanded={open}
+        className="grid h-9 w-9 place-items-center rounded-full border border-border text-foreground transition-colors hover:bg-muted active:bg-muted md:hidden"
       >
         <Menu className="h-4 w-4" strokeWidth={1.5} />
       </button>
 
       {mounted &&
         createPortal(
-          <AnimatePresence>
-            {open && (
-              <>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.25 }}
-                  onClick={() => setOpen(false)}
-                  className="fixed inset-0 z-[80] bg-black/60 backdrop-blur-sm md:hidden"
-                />
+          <>
+            {/* Backdrop - CSS opacity transition, pointer-events gated on
+                `open` so it doesn't catch taps while invisible. */}
+            <div
+              onClick={() => setOpen(false)}
+              aria-hidden
+              className={cn(
+                "fixed inset-0 z-[80] bg-black/60 backdrop-blur-sm transition-opacity duration-200 md:hidden",
+                open ? "opacity-100" : "pointer-events-none opacity-0",
+              )}
+            />
 
-                <motion.div
-                  initial={{ x: "100%" }}
-                  animate={{ x: 0 }}
-                  exit={{ x: "100%" }}
-                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  className="fixed right-0 top-0 z-[90] flex h-[100dvh] w-[88%] max-w-sm flex-col bg-background border-l border-border md:hidden"
-                >
+            {/* Drawer - CSS translateX transition. Stays mounted after
+                first open; subsequent opens are pure class swaps. */}
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-label="Navigation"
+              className={cn(
+                "fixed right-0 top-0 z-[90] flex h-[100dvh] w-[88%] max-w-sm flex-col bg-background border-l border-border md:hidden",
+                "transition-transform duration-300 ease-out will-change-transform",
+                open ? "translate-x-0" : "translate-x-full",
+              )}
+            >
               <div className="flex items-center justify-between border-b border-border p-5">
                 <span className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
                   Menu
@@ -90,7 +114,7 @@ export function MobileMenu() {
                   type="button"
                   onClick={() => setOpen(false)}
                   aria-label="Close menu"
-                  className="grid h-9 w-9 place-items-center rounded-full border border-border text-foreground transition-colors hover:bg-muted"
+                  className="grid h-9 w-9 place-items-center rounded-full border border-border text-foreground transition-colors hover:bg-muted active:bg-muted"
                 >
                   <X className="h-4 w-4" strokeWidth={1.5} />
                 </button>
@@ -98,20 +122,17 @@ export function MobileMenu() {
 
               <nav className="flex flex-1 flex-col gap-1 p-5">
                 {links.map((link, i) => (
-                  <motion.a
+                  <a
                     key={link.href}
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.4, delay: 0.1 + i * 0.06 }}
-                    className="flex items-center justify-between rounded-xl px-4 py-4 font-display text-2xl font-semibold transition-colors hover:bg-muted"
+                    className="flex items-center justify-between rounded-xl px-4 py-4 font-display text-2xl font-semibold transition-colors hover:bg-muted active:bg-muted"
                   >
                     <span>{link.label}</span>
                     <span className="font-mono text-xs text-muted-foreground">
                       0{i + 1}
                     </span>
-                  </motion.a>
+                  </a>
                 ))}
               </nav>
 
@@ -151,10 +172,8 @@ export function MobileMenu() {
                   ))}
                 </div>
               </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>,
+            </div>
+          </>,
           document.body,
         )}
     </>
