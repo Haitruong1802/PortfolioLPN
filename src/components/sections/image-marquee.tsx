@@ -29,7 +29,7 @@ const TILES = [
 
 // Identity tags (hàng dưới, mono, mảnh) — chạy ngược chiều
 const TAGS_BOTTOM = [
-  "ACCOUNT INTERN",
+  "ACCOUNT EXECUTIVE",
   "EVENT AGENCY",
   "UEH",
   "GO BIG OR GO HOME",

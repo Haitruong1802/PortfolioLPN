@@ -1093,7 +1093,7 @@ function SintechShowcase({
                   delay: Math.min(i * 0.05, 0.3),
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="group relative block aspect-[3/4] overflow-hidden rounded-lg border border-border bg-card transition-colors hover:border-foreground/20"
+                className="group relative block aspect-[2/3] overflow-hidden rounded-lg border border-border bg-card transition-colors hover:border-foreground/20"
                 aria-label={`Zoom ${img.alt}`}
               >
                 <Image
@@ -1101,7 +1101,7 @@ function SintechShowcase({
                   alt={img.alt}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                 />
                 <div className="pointer-events-none absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full bg-black/60 text-white opacity-0 backdrop-blur transition-opacity duration-200 group-hover:opacity-100">
                   <Eye className="h-3 w-3" />
