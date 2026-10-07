@@ -377,8 +377,8 @@ export const experienceItems: ExperienceItem[] = [
     org: "SINTECH Computer Technology Co., Ltd",
     shortOrg: "Sintech",
     role: {
-      en: "Marketing & Operations Executive Intern",
-      vi: "Marketing & Operations Executive Intern",
+      en: "Marketing & Operations Executive",
+      vi: "Marketing & Operations Executive",
     },
     duration: { en: "2025", vi: "2025" },
     campaignName: {
@@ -386,8 +386,8 @@ export const experienceItems: ExperienceItem[] = [
       vi: "Sintech PC Gaming & Gear — Fanpage & E-commerce",
     },
     campaignContext: {
-      en: "Real internship · 7K fanpage followers managed",
-      vi: "Internship thực tế · Quản lý fanpage 7K theo dõi",
+      en: "Real work experience · 7K fanpage followers managed",
+      vi: "Kinh nghiệm thực tế · Quản lý fanpage 7K theo dõi",
     },
     hero: {
       src: "/experience/sintech/fanpage.png",
@@ -470,6 +470,29 @@ export const experienceItems: ExperienceItem[] = [
       { src: "/experience/sintech/zalo-oa-2.jpg", alt: "Zalo OA 2", aspect: "landscape" },
       { src: "/experience/sintech/store.jpg", alt: "Store", aspect: "landscape" },
     ],
+  },
+
+  // ─── 04 — BEYOND COMMUNICATION ─────────────────────────────────────
+  {
+    step: "04",
+    org: "BEYOND COMMUNICATION",
+    shortOrg: "Beyond",
+    role: {
+      en: "Account Biz Intern",
+      vi: "Account Biz Intern",
+    },
+    duration: { en: "2026", vi: "2026" },
+    campaignName: {
+      en: "Starbucks Presents 2026 — The Siren World",
+      vi: "Starbucks Presents 2026 — The Siren World",
+    },
+    campaignContext: {
+      en: "Agency Internship · Marketing · Event · Activation · Entertainment",
+      vi: "Agency Internship · Marketing · Event · Activation · Entertainment",
+    },
+    // Rendered by SintechShowcase + BEYOND_TASKS (see process.tsx)
+    responsibilities: [],
+    gallery: [],
   },
 ];
 

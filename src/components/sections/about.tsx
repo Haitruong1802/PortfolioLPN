@@ -6,7 +6,6 @@ import { useLocale } from "@/lib/i18n/provider";
 import { profile } from "@/lib/content/profile";
 import { AnimatedEyebrow } from "@/components/animations/animated-eyebrow";
 import { SectionSpotlight } from "@/components/site/section-spotlight";
-import { ScrollTextReveal } from "@/components/animations/scroll-text-reveal";
 import { LetterReveal } from "@/components/animations/letter-reveal";
 import { useLowEndDevice } from "@/lib/hooks/use-low-end-device";
 import { useAnimationProfile } from "@/lib/hooks/use-animation-profile";
@@ -70,7 +69,7 @@ export function About() {
         ))}
       </div>
 
-      <div className="grid gap-10 md:grid-cols-[1.4fr_1fr]">
+      <div>
         <h2 className="font-display text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl md:text-6xl">
           <LetterReveal
             text={
@@ -80,10 +79,6 @@ export function About() {
             }
           />
         </h2>
-
-        <p className="max-w-md text-base leading-relaxed md:text-lg">
-          <ScrollTextReveal>{profile.bio[locale]}</ScrollTextReveal>
-        </p>
       </div>
 
       {/* ─── 2. EDITORIAL QUOTE CARDS — 2 story blocks ─── */}

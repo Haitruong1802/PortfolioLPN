@@ -11,8 +11,8 @@ export function AvailablePill() {
   const { locale } = useLocale();
   const text =
     locale === "vi"
-      ? "Đang tìm vị trí Account Intern"
-      : "Looking for Account Intern role";
+      ? "Đang tìm vị trí Account Executive"
+      : "Looking for Account Executive role";
 
   return (
     <motion.div

@@ -310,7 +310,7 @@ export function Preloader() {
                 transition={{ duration: 0.5, delay: 1.3 }}
                 className="mt-8 font-mono text-[10px] uppercase tracking-[0.45em] text-white/50"
               >
-                Lê Phương Nam · Account Intern
+                Lê Phương Nam · Account Executive
               </motion.p>
             </div>
           )}

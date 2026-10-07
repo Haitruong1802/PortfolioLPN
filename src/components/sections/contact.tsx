@@ -101,7 +101,7 @@ export function Contact() {
             {profile.name}
           </p>
           <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
-            Account Intern · UEH
+            Account Executive · UEH
           </p>
         </motion.div>
       </div>
@@ -157,8 +157,8 @@ export function Contact() {
         <a
           href={`mailto:${profile.email}?subject=${encodeURIComponent(
             locale === "vi"
-              ? "Mời phỏng vấn Account Intern"
-              : "Account Intern interview invite",
+              ? "Mời phỏng vấn Account Executive"
+              : "Account Executive interview invite",
           )}`}
           className="group inline-flex h-12 items-center gap-2 rounded-full bg-gradient-to-r from-brand-orange to-brand-blue px-6 text-sm font-semibold text-white shadow-lg shadow-brand-orange/20 transition-all hover:shadow-brand-blue/40 active:scale-[0.98]"
         >

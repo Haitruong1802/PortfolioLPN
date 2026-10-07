@@ -41,9 +41,9 @@ const display = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Lê Phương Nam - Account Intern | UEH",
+  title: "Lê Phương Nam - Account Executive | UEH",
   description:
-    "Lê Phương Nam - sinh viên UEH, ENFP, đang tìm vị trí Account Intern tại Event Agency. GO BIG OR GO HOME.",
+    "Lê Phương Nam - sinh viên UEH, ENFP, đang tìm vị trí Account Executive tại Event Agency. GO BIG OR GO HOME.",
   metadataBase: new URL("https://example.com"),
   icons: {
     icon: [{ url: "/logo.png", type: "image/png" }],
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     apple: "/logo.png",
   },
   openGraph: {
-    title: "Lê Phương Nam - Account Intern",
+    title: "Lê Phương Nam - Account Executive",
     description:
       "Sinh viên UEH · ENFP · 4 cuộc thi đạt giải · GO BIG OR GO HOME.",
     type: "website",
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Lê Phương Nam - Account Intern",
+    title: "Lê Phương Nam - Account Executive",
     description:
       "Sinh viên UEH · ENFP · GO BIG OR GO HOME.",
   },

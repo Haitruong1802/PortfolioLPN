@@ -25,7 +25,7 @@ const SPARKLES = [
  * Hero / Trang Bìa — minimal, theo đúng docs.
  *  - 2/3 trái: Typography
  *      • GO BIG / OR / GO HOME (cam / trắng / xanh)
- *      • Lê Phương Nam — Account Intern
+ *      • Lê Phương Nam — Account Executive
  *      • Tagline italic
  *  - 1/3 phải: Portrait cut-out
  *  - Background: Fluid Gradient
@@ -241,7 +241,7 @@ export function Hero() {
               </motion.span>
             </h1>
 
-            {/* Tiêu đề định vị: Lê Phương Nam — Account Intern */}
+            {/* Tiêu đề định vị: Lê Phương Nam — Account Executive */}
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}

@@ -26,14 +26,15 @@ import { Tilt } from "@/components/animations/tilt";
 import { cn } from "@/lib/utils";
 
 
-const stepAccent = ["text-brand-orange", "text-brand-blue", "text-brand-orange"];
-const stepRing = ["ring-brand-orange", "ring-brand-blue", "ring-brand-orange"];
+const stepAccent = ["text-brand-orange", "text-brand-blue", "text-brand-orange", "text-brand-blue"];
+const stepRing = ["ring-brand-orange", "ring-brand-blue", "ring-brand-orange", "ring-brand-blue"];
 const stepBtn = [
   "border-brand-orange/40 bg-brand-orange/10 text-brand-orange",
   "border-brand-blue/40 bg-brand-blue/10 text-brand-blue",
   "border-brand-orange/40 bg-brand-orange/10 text-brand-orange",
+  "border-brand-blue/40 bg-brand-blue/10 text-brand-blue",
 ];
-const stepGlow: ("orange" | "blue")[] = ["orange", "blue", "orange"];
+const stepGlow: ("orange" | "blue")[] = ["orange", "blue", "orange", "blue"];
 
 export function Process() {
   const { locale } = useLocale();
@@ -62,16 +63,33 @@ export function Process() {
       </div>
 
       <ol className="mt-16 flex flex-col gap-24">
-        {experienceItems.map((exp, i) =>
-          exp.org.toUpperCase().startsWith("SINTECH") ? (
-            <SintechShowcase
-              key={exp.org}
-              exp={exp}
-              index={i}
-              accent={stepAccent[i]}
-              onZoom={setZoom}
-            />
-          ) : (
+        {experienceItems.map((exp, i) => {
+          const upper = exp.org.toUpperCase();
+          if (upper.startsWith("SINTECH")) {
+            return (
+              <SintechShowcase
+                key={exp.org}
+                exp={exp}
+                index={i}
+                accent={stepAccent[i]}
+                onZoom={setZoom}
+                tasks={SINTECH_TASKS}
+              />
+            );
+          }
+          if (upper.startsWith("BEYOND")) {
+            return (
+              <SintechShowcase
+                key={exp.org}
+                exp={exp}
+                index={i}
+                accent={stepAccent[i]}
+                onZoom={setZoom}
+                tasks={BEYOND_TASKS}
+              />
+            );
+          }
+          return (
             <ExperienceBlock
               key={exp.org}
               exp={exp}
@@ -82,8 +100,8 @@ export function Process() {
               glowAccent={stepGlow[i]}
               onZoom={setZoom}
             />
-          ),
-        )}
+          );
+        })}
       </ol>
 
       <AnimatePresence>
@@ -904,6 +922,73 @@ const SINTECH_TASKS: SintechTask[] = [
 ];
 
 // ─────────────────────────────────────────────────────────────
+// BEYOND COMMUNICATION — Account Biz Intern (Starbucks Presents 2026)
+// 4 nhiệm vụ cùng layout 2 cột như Sintech
+// ─────────────────────────────────────────────────────────────
+const BEYOND_TASKS: SintechTask[] = [
+  {
+    id: "brief",
+    num: "01",
+    vi: {
+      title: "Brief Analysis & Project Research",
+      desc: "Tiếp nhận và phân tích brief theo các nhóm mục tiêu, đối tượng hướng đến, phạm vi công việc và yêu cầu đầu ra. Thực hiện research về thương hiệu, ngành hàng, đối thủ, xu hướng, target audience và case study để xây dựng cơ sở thông tin cho quá trình phát triển dự án.",
+    },
+    en: {
+      title: "Brief Analysis & Project Research",
+      desc: "Received and analysed briefs by target groups, audience, scope, and deliverables. Researched brands, industries, competitors, trends, target audiences, and case studies to build a knowledge base for project development.",
+    },
+    images: [],
+    imgAspect: "aspect-[4/3]",
+    cols: 1,
+  },
+  {
+    id: "concept",
+    num: "02",
+    vi: {
+      title: "Concept, Idea & Content Development",
+      desc: "Tham gia brainstorming cùng team, đối chiếu brief với research và hỗ trợ phát triển concept, idea thành các hoạt động cụ thể. Tìm kiếm thêm hình ảnh, reference và case study nhằm làm rõ hướng triển khai và tăng tính thuyết phục cho nội dung đề xuất.",
+    },
+    en: {
+      title: "Concept, Idea & Content Development",
+      desc: "Joined team brainstorms, cross-referenced the brief with research, and supported developing concepts and ideas into concrete activities. Sourced additional visuals, references, and case studies to clarify execution and strengthen the pitch.",
+    },
+    images: [],
+    imgAspect: "aspect-[4/3]",
+    cols: 1,
+  },
+  {
+    id: "sponsor-deck",
+    num: "03",
+    vi: {
+      title: "Sponsor Deck Development",
+      desc: "Hỗ trợ xây dựng và cập nhật sponsor deck từ brief, research và các nội dung đã thống nhất. Thực hiện chọn lọc thông tin, hình ảnh, số liệu và case study; đồng thời rà soát câu chữ và sự liên kết giữa các trang trước khi bàn giao.",
+    },
+    en: {
+      title: "Sponsor Deck Development",
+      desc: "Supported building and updating sponsor decks based on briefs, research, and agreed content. Curated information, visuals, numbers, and case studies; reviewed copy and page-to-page flow before handover.",
+    },
+    images: [],
+    imgAspect: "aspect-[4/3]",
+    cols: 1,
+  },
+  {
+    id: "backstage",
+    num: "04",
+    vi: {
+      title: "Talent & Backstage Operations",
+      desc: "Tham gia vận hành backstage tại Starbucks Presents 2026 - The Siren World, quản lý các đầu việc liên quan đến nghệ sĩ và khu vực hậu trường theo phân công. Phối hợp thông tin với các bên liên quan, theo dõi tình trạng đầu việc và hỗ trợ duy trì luồng vận hành backstage trong suốt chương trình.",
+    },
+    en: {
+      title: "Talent & Backstage Operations",
+      desc: "Operated backstage at Starbucks Presents 2026 - The Siren World, managing talent and backstage tasks per assignment. Coordinated information across stakeholders, tracked task status, and helped sustain backstage flow throughout the show.",
+    },
+    images: [],
+    imgAspect: "aspect-[4/3]",
+    cols: 1,
+  },
+];
+
+// ─────────────────────────────────────────────────────────────
 // SintechShowcase — Editorial case-study layout
 // Minimal decoration. Typography-led. Whitespace generous.
 // Inspired by case-study pages from premium agencies / Stripe Press.
@@ -912,11 +997,13 @@ function SintechShowcase({
   exp,
   accent,
   onZoom,
+  tasks,
 }: {
   exp: ExperienceItem;
   index: number;
   accent: string;
   onZoom: (img: ExpImage) => void;
+  tasks: SintechTask[];
 }) {
   const { locale } = useLocale();
 
@@ -964,16 +1051,16 @@ function SintechShowcase({
         </div>
       </header>
 
-      {/* Task grid — single-image tasks pair side-by-side, multi-image span full width */}
+      {/* Task grid — 2 columns side-by-side on md+ */}
       <div className="grid gap-x-8 gap-y-10 md:gap-y-12 md:grid-cols-2">
-        {SINTECH_TASKS.map((task) => (
+        {tasks.map((task) => (
           <SintechTaskSection
             key={task.id}
             task={task}
             locale={locale}
             accent={accent}
             onZoom={onZoom}
-            spanTwo={task.images.length > 1}
+            spanTwo={false}
           />
         ))}
       </div>

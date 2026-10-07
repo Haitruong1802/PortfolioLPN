@@ -32,34 +32,34 @@ export const skillGroups: SkillGroup[] = [
       {
         icon: Search,
         title: {
-          en: "Research & Analysis",
-          vi: "Nghiên cứu & Phân tích",
+          en: "Brief & Research",
+          vi: "Tiếp nhận Brief & Research",
         },
         description: {
-          en: "Reading market trends and competitor moves to extract insights that stay close to the real project.",
-          vi: "Đánh giá xu hướng thị trường và phân tích đối thủ cạnh tranh để đúc kết insight sát với thực tế dự án.",
+          en: "Analyse the brief and research the brand, industry, target audience, trends, and case studies that power the project.",
+          vi: "Phân tích yêu cầu từ brief; research thương hiệu, ngành hàng, đối tượng mục tiêu, xu hướng và case study phục vụ dự án.",
         },
       },
       {
         icon: Presentation,
         title: {
-          en: "Listening & Strategic Pitching",
-          vi: "Lắng nghe & Thuyết trình chiến lược",
+          en: "Sponsor Deck & Feedback",
+          vi: "Sponsor Deck & Feedback",
         },
         description: {
-          en: "Catching the core ask in a brief and turning it into pitch content with a clear strategic direction.",
-          vi: "Khả năng nắm bắt yêu cầu cốt lõi (brief) và xây dựng nội dung pitching có tính định hướng cao.",
+          en: "Build and update sponsor decks; curate content, visuals, and numbers; refine the document from feedback rounds.",
+          vi: "Hỗ trợ xây dựng, cập nhật sponsor deck; chọn lọc nội dung, hình ảnh, số liệu và chỉnh sửa tài liệu theo feedback.",
         },
       },
       {
         icon: ClipboardList,
         title: {
-          en: "Admin & Reporting",
-          vi: "Hành chính & Báo cáo",
+          en: "Recap, WIP & Task Tracking",
+          vi: "Recap, WIP & Theo dõi công việc",
         },
         description: {
-          en: "Setting up execution timelines, estimating budgets, and assessing risk; keeping information consistent through meeting minutes and progress reports.",
-          vi: "Xây dựng timeline triển khai, dự trù ngân sách và đánh giá rủi ro; hệ thống hóa thông tin xuyên suốt qua các biên bản họp và báo cáo tiến độ.",
+          en: "Capture discussion notes, write recaps; update WIP, track progress, review documents, and follow up on open tasks.",
+          vi: "Ghi nhận nội dung trao đổi, tổng hợp recap; cập nhật WIP, theo dõi tiến độ, kiểm tra tài liệu và các đầu việc cần tiếp tục xử lý.",
         },
       },
     ],

@@ -105,7 +105,7 @@ export function Footer() {
             {profile.name}
           </p>
           <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
-            Account Intern · UEH · {profile.location[locale]}
+            Account Executive · UEH · {profile.location[locale]}
           </p>
         </motion.div>
 
