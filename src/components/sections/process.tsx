@@ -1416,7 +1416,7 @@ function ImageZoomModal({
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.96, opacity: 0 }}
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="relative flex w-full max-w-[95vw] flex-col items-center"
+          className="relative flex max-h-[85vh] max-w-[95vw] flex-col items-center"
           onClick={(e) => e.stopPropagation()}
         >
           <TransformWrapper
@@ -1430,16 +1430,13 @@ function ImageZoomModal({
             centerOnInit
           >
             <TransformComponent
-              wrapperClass="!w-full !max-h-[80vh] cursor-grab active:cursor-grabbing"
-              contentClass="!w-full"
+              wrapperClass="!flex cursor-grab active:cursor-grabbing"
             >
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={img.src}
                 alt={img.alt}
-                width={1600}
-                height={1200}
-                sizes="(max-width: 768px) 92vw, (max-width: 1280px) 80vw, 80rem"
-                className="block h-auto max-h-[80vh] w-full select-none rounded-2xl object-contain"
+                className="block max-h-[85vh] max-w-[95vw] w-auto h-auto select-none rounded-2xl"
                 draggable={false}
               />
             </TransformComponent>
