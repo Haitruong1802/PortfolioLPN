@@ -923,7 +923,7 @@ const SINTECH_TASKS: SintechTask[] = [
 ];
 
 // ─────────────────────────────────────────────────────────────
-// BEYOND COMMUNICATION — Account Biz Intern (Starbucks Presents 2026)
+// BEYOND ENTERTAINMENT & COMMUNICATION — Account Biz Intern (Starbucks Presents 2026)
 // 4 nhiệm vụ cùng layout 2 cột như Sintech
 // ─────────────────────────────────────────────────────────────
 const BEYOND_TASKS: SintechTask[] = [

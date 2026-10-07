@@ -463,10 +463,10 @@ export const experienceItems: ExperienceItem[] = [
     ],
   },
 
-  // ─── 04 — BEYOND COMMUNICATION ─────────────────────────────────────
+  // ─── 04 — BEYOND ENTERTAINMENT & COMMUNICATION ─────────────────────────────────────
   {
     step: "04",
-    org: "BEYOND COMMUNICATION",
+    org: "Beyond Entertainment & Communication",
     shortOrg: "Beyond",
     role: {
       en: "Account Biz Intern",
