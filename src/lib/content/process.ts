@@ -381,18 +381,9 @@ export const experienceItems: ExperienceItem[] = [
       vi: "Marketing & Operations Executive",
     },
     duration: { en: "2025", vi: "2025" },
-    campaignName: {
-      en: "Sintech PC Gaming & Gear — Fanpage & E-commerce",
-      vi: "Sintech PC Gaming & Gear — Fanpage & E-commerce",
-    },
     campaignContext: {
       en: "Real work experience · 7K fanpage followers managed",
       vi: "Kinh nghiệm thực tế · Quản lý fanpage 7K theo dõi",
-    },
-    hero: {
-      src: "/experience/sintech/fanpage.png",
-      alt: "Sintech PC Gaming & Gear Fanpage",
-      aspect: "landscape",
     },
     responsibilities: [
       {
@@ -482,17 +473,13 @@ export const experienceItems: ExperienceItem[] = [
       vi: "Account Biz Intern",
     },
     duration: { en: "2026", vi: "2026" },
-    campaignName: {
-      en: "Starbucks Presents 2026 — The Siren World",
-      vi: "Starbucks Presents 2026 — The Siren World",
-    },
     campaignContext: {
       en: "Agency Internship · Marketing · Event · Activation · Entertainment",
       vi: "Agency Internship · Marketing · Event · Activation · Entertainment",
     },
     hero: {
-      src: "/experience/beyond/nam-portrait.png",
-      alt: "Lê Phương Nam — Account Biz Intern, Beyond Communication",
+      src: "/experience/beyond/nam-starbucks-backstage.png",
+      alt: "Lê Phương Nam — Backstage Starbucks Presents 2026, The Siren World",
       aspect: "square",
     },
     // Rendered by SintechShowcase + BEYOND_TASKS (per-task images, no bottom gallery)

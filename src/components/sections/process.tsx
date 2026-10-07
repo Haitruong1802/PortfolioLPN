@@ -997,8 +997,8 @@ const BEYOND_TASKS: SintechTask[] = [
     },
     images: [
       {
-        src: "/experience/beyond/nam-starbucks-backstage.png",
-        alt: "Lê Phương Nam — Backstage Starbucks Presents 2026, The Siren World",
+        src: "/experience/beyond/starbucks-stage.jpg",
+        alt: "Sân khấu chính Starbucks Presents 2026 — The Siren World · 218 Dance Crew · Son Mạch & Đàn Nhạc TUSO",
       },
     ],
     imgAspect: "aspect-[4/3]",
