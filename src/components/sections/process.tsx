@@ -86,7 +86,7 @@ export function Process() {
                 accent={stepAccent[i]}
                 onZoom={setZoom}
                 tasks={BEYOND_TASKS}
-                showGallery
+                tasksAlwaysExpanded
               />
             );
           }
@@ -938,9 +938,13 @@ const BEYOND_TASKS: SintechTask[] = [
       title: "Brief Analysis & Project Research",
       desc: "Received and analysed briefs by target groups, audience, scope, and deliverables. Researched brands, industries, competitors, trends, target audiences, and case studies to build a knowledge base for project development.",
     },
-    images: [],
-    imgAspect: "aspect-[4/3]",
-    cols: 1,
+    images: [
+      { src: "/experience/beyond/01-hozo-colusa-miliket.jpg", alt: "HOZO x Colusa-Miliket · Research Booth & Activities 2023-2025" },
+      { src: "/experience/beyond/02-the-portal-brand-activations.jpg", alt: "The Portal · Public Art x Brand Activations Research" },
+      { src: "/experience/beyond/03-le-mo-ky-cong-uoc-ha-noi-2025.jpg", alt: "Lễ mở ký Công ước Hà Nội 2025" },
+    ],
+    imgAspect: "aspect-[2/3]",
+    cols: 3,
   },
   {
     id: "concept",
@@ -953,9 +957,13 @@ const BEYOND_TASKS: SintechTask[] = [
       title: "Concept, Idea & Content Development",
       desc: "Joined team brainstorms, cross-referenced the brief with research, and supported developing concepts and ideas into concrete activities. Sourced additional visuals, references, and case studies to clarify execution and strengthen the pitch.",
     },
-    images: [],
-    imgAspect: "aspect-[4/3]",
-    cols: 1,
+    images: [
+      { src: "/experience/beyond/04-hanh-trinh-khach-hang-live.jpg", alt: "Hành trình Khách hàng — LIVE · Concept Development" },
+      { src: "/experience/beyond/05-buoc-tien-vuon-cao-budweiser.jpg", alt: "Bước tiến vươn cao — Budweiser · Idea Development" },
+      { src: "/experience/beyond/06-execution-idea.jpg", alt: "Execution Idea" },
+    ],
+    imgAspect: "aspect-[2/3]",
+    cols: 3,
   },
   {
     id: "sponsor-deck",
@@ -968,9 +976,13 @@ const BEYOND_TASKS: SintechTask[] = [
       title: "Sponsor Deck Development",
       desc: "Supported building and updating sponsor decks based on briefs, research, and agreed content. Curated information, visuals, numbers, and case studies; reviewed copy and page-to-page flow before handover.",
     },
-    images: [],
-    imgAspect: "aspect-[4/3]",
-    cols: 1,
+    images: [
+      { src: "/experience/beyond/07-hue-wonderview-fest-2026.jpg", alt: "Hue Wonderview Fest 2026 · Sponsor Deck" },
+      { src: "/experience/beyond/08-dawave.jpg", alt: "DAWAVE · HOZO International Music Festival · Sponsor Deck" },
+      { src: "/experience/beyond/09-vietnam-jazz-heritage-festival.jpg", alt: "Vietnam Jazz Heritage Festival 2026 · Haus Da Lat Sponsor Deck" },
+    ],
+    imgAspect: "aspect-[2/3]",
+    cols: 3,
   },
   {
     id: "backstage",
@@ -983,7 +995,12 @@ const BEYOND_TASKS: SintechTask[] = [
       title: "Talent & Backstage Operations",
       desc: "Operated backstage at Starbucks Presents 2026 - The Siren World, managing talent and backstage tasks per assignment. Coordinated information across stakeholders, tracked task status, and helped sustain backstage flow throughout the show.",
     },
-    images: [],
+    images: [
+      {
+        src: "/experience/beyond/nam-starbucks-backstage.png",
+        alt: "Lê Phương Nam — Backstage Starbucks Presents 2026, The Siren World",
+      },
+    ],
     imgAspect: "aspect-[4/3]",
     cols: 1,
   },
@@ -999,14 +1016,14 @@ function SintechShowcase({
   accent,
   onZoom,
   tasks,
-  showGallery = false,
+  tasksAlwaysExpanded = false,
 }: {
   exp: ExperienceItem;
   index: number;
   accent: string;
   onZoom: (img: ExpImage) => void;
   tasks: SintechTask[];
-  showGallery?: boolean;
+  tasksAlwaysExpanded?: boolean;
 }) {
   const { locale } = useLocale();
 
@@ -1018,41 +1035,101 @@ function SintechShowcase({
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className="relative"
     >
-      {/* Header — same hierarchy as other ExperienceBlock */}
-      <header className="mb-14 grid gap-6 md:grid-cols-[auto_1fr]">
-        <div className="flex items-center gap-4 md:flex-col md:items-start md:gap-2">
-          <span
-            className={cn(
-              "font-display font-extrabold leading-none tracking-tighter",
-              accent,
-            )}
-            style={{ fontSize: "clamp(2.75rem, 5vw, 4.5rem)" }}
+      {/* Header — hero portrait (if any) + step/title/role/context */}
+      {exp.hero ? (
+        <header className="mb-14 grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:items-start">
+          <button
+            type="button"
+            onClick={() => onZoom(exp.hero as ExpImage)}
+            className="group relative block aspect-square overflow-hidden rounded-2xl border border-border bg-card transition-colors hover:border-foreground/20"
+            aria-label={`Zoom ${exp.hero.alt}`}
           >
-            {exp.step}
-          </span>
-          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-            {exp.duration[locale]}
-          </p>
-        </div>
-        <div className="min-w-0">
-          <h3 className="font-display text-3xl font-bold leading-tight tracking-tight md:text-4xl">
-            {exp.org}
-          </h3>
-          <p className="mt-2 text-base text-muted-foreground md:text-lg">
-            {exp.role[locale]}
-          </p>
-          {exp.campaignContext && (
-            <p
+            <Image
+              src={exp.hero.src}
+              alt={exp.hero.alt}
+              fill
+              sizes="(max-width: 768px) 100vw, 33vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+              priority={false}
+            />
+            <div className="pointer-events-none absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-black/60 text-white opacity-0 backdrop-blur transition-opacity duration-200 group-hover:opacity-100">
+              <Eye className="h-4 w-4" />
+            </div>
+          </button>
+          <div className="min-w-0">
+            <div className="flex items-baseline gap-5">
+              <span
+                className={cn(
+                  "font-display font-extrabold leading-none tracking-tighter",
+                  accent,
+                )}
+                style={{ fontSize: "clamp(2.75rem, 5vw, 4.5rem)" }}
+              >
+                {exp.step}
+              </span>
+              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+                {exp.duration[locale]}
+              </p>
+            </div>
+            <h3 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight md:text-4xl">
+              {exp.org}
+            </h3>
+            <p className="mt-2 text-base text-muted-foreground md:text-lg">
+              {exp.role[locale]}
+            </p>
+            {exp.campaignName && (
+              <p className="mt-3 font-display text-lg font-semibold leading-tight tracking-tight text-foreground/90 md:text-xl">
+                {exp.campaignName[locale]}
+              </p>
+            )}
+            {exp.campaignContext && (
+              <p
+                className={cn(
+                  "mt-3 font-mono text-[10px] uppercase tracking-[0.22em]",
+                  accent,
+                )}
+              >
+                ▸ {exp.campaignContext[locale]}
+              </p>
+            )}
+          </div>
+        </header>
+      ) : (
+        <header className="mb-14 grid gap-6 md:grid-cols-[auto_1fr]">
+          <div className="flex items-center gap-4 md:flex-col md:items-start md:gap-2">
+            <span
               className={cn(
-                "mt-3 font-mono text-[10px] uppercase tracking-[0.22em]",
+                "font-display font-extrabold leading-none tracking-tighter",
                 accent,
               )}
+              style={{ fontSize: "clamp(2.75rem, 5vw, 4.5rem)" }}
             >
-              ▸ {exp.campaignContext[locale]}
+              {exp.step}
+            </span>
+            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+              {exp.duration[locale]}
             </p>
-          )}
-        </div>
-      </header>
+          </div>
+          <div className="min-w-0">
+            <h3 className="font-display text-3xl font-bold leading-tight tracking-tight md:text-4xl">
+              {exp.org}
+            </h3>
+            <p className="mt-2 text-base text-muted-foreground md:text-lg">
+              {exp.role[locale]}
+            </p>
+            {exp.campaignContext && (
+              <p
+                className={cn(
+                  "mt-3 font-mono text-[10px] uppercase tracking-[0.22em]",
+                  accent,
+                )}
+              >
+                ▸ {exp.campaignContext[locale]}
+              </p>
+            )}
+          </div>
+        </header>
+      )}
 
       {/* Task grid — 2 columns side-by-side on md+ */}
       <div className="grid gap-x-8 gap-y-10 md:gap-y-12 md:grid-cols-2">
@@ -1064,53 +1141,10 @@ function SintechShowcase({
             accent={accent}
             onZoom={onZoom}
             spanTwo={false}
+            alwaysExpanded={tasksAlwaysExpanded}
           />
         ))}
       </div>
-
-      {showGallery && exp.gallery.length > 0 && (
-        <section className="mt-16">
-          <p
-            className={cn(
-              "mb-5 font-mono text-[10px] uppercase tracking-[0.22em]",
-              accent,
-            )}
-          >
-            ▸ {locale === "vi" ? "Dự án đã tham gia" : "Projects"} ·{" "}
-            {String(exp.gallery.length).padStart(2, "0")}
-          </p>
-          <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            {exp.gallery.map((img, i) => (
-              <motion.button
-                key={img.src}
-                type="button"
-                onClick={() => onZoom(img)}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{
-                  duration: 0.5,
-                  delay: Math.min(i * 0.05, 0.3),
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="group relative block aspect-[2/3] overflow-hidden rounded-lg border border-border bg-card transition-colors hover:border-foreground/20"
-                aria-label={`Zoom ${img.alt}`}
-              >
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                />
-                <div className="pointer-events-none absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full bg-black/60 text-white opacity-0 backdrop-blur transition-opacity duration-200 group-hover:opacity-100">
-                  <Eye className="h-3 w-3" />
-                </div>
-              </motion.button>
-            ))}
-          </div>
-        </section>
-      )}
     </motion.li>
   );
 }
@@ -1121,17 +1155,21 @@ function SintechTaskSection({
   accent,
   onZoom,
   spanTwo,
+  alwaysExpanded = false,
 }: {
   task: SintechTask;
   locale: "vi" | "en";
   accent: string;
   onZoom: (img: ExpImage) => void;
   spanTwo: boolean;
+  alwaysExpanded?: boolean;
 }) {
   const content = task[locale];
   const isMultiImage = task.images.length > 1;
   // Multi-image tasks (03–06) start collapsed — user clicks "Xem thêm" to expand
-  const [imagesOpen, setImagesOpen] = React.useState(!isMultiImage);
+  const [imagesOpen, setImagesOpen] = React.useState(
+    alwaysExpanded || !isMultiImage,
+  );
   const gridCols =
     task.cols === 1
       ? "grid-cols-1"
@@ -1222,11 +1260,11 @@ function SintechTaskSection({
         </p>
       </div>
 
-      {/* Single-image tasks: show grid directly */}
-      {!isMultiImage && imageGrid}
+      {/* Single-image or always-expanded: show grid directly */}
+      {(!isMultiImage || alwaysExpanded) && imageGrid}
 
-      {/* Multi-image tasks (03–06): "Xem thêm" toggle */}
-      {isMultiImage && (
+      {/* Multi-image tasks (03–06) in Sintech: "Xem thêm" toggle */}
+      {isMultiImage && !alwaysExpanded && (
         <>
           <button
             type="button"

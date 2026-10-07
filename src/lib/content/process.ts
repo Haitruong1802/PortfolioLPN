@@ -490,55 +490,14 @@ export const experienceItems: ExperienceItem[] = [
       en: "Agency Internship · Marketing · Event · Activation · Entertainment",
       vi: "Agency Internship · Marketing · Event · Activation · Entertainment",
     },
-    // Rendered by SintechShowcase + BEYOND_TASKS (see process.tsx)
+    hero: {
+      src: "/experience/beyond/nam-portrait.png",
+      alt: "Lê Phương Nam — Account Biz Intern, Beyond Communication",
+      aspect: "square",
+    },
+    // Rendered by SintechShowcase + BEYOND_TASKS (per-task images, no bottom gallery)
     responsibilities: [],
-    gallery: [
-      {
-        src: "/experience/beyond/01-hozo-colusa-miliket.jpg",
-        alt: "HOZO International Music Festival x Colusa-Miliket — Research Booth & Activities 2023-2025",
-        aspect: "landscape",
-      },
-      {
-        src: "/experience/beyond/02-the-portal-brand-activations.jpg",
-        alt: "The Portal — Public Art x Technology Installation (Dublin · FIFA World Cup Qatar 2022 · IKEA Foundation UN.Live · RMIT Open Doors)",
-        aspect: "landscape",
-      },
-      {
-        src: "/experience/beyond/03-le-mo-ky-cong-uoc-ha-noi-2025.jpg",
-        alt: "Lễ mở ký Công ước Hà Nội 2025",
-        aspect: "landscape",
-      },
-      {
-        src: "/experience/beyond/04-hanh-trinh-khach-hang-live.jpg",
-        alt: "Hành trình Khách hàng — LIVE",
-        aspect: "landscape",
-      },
-      {
-        src: "/experience/beyond/05-buoc-tien-vuon-cao-budweiser.jpg",
-        alt: "Bước tiến vươn cao — Budweiser",
-        aspect: "landscape",
-      },
-      {
-        src: "/experience/beyond/06-execution-idea.jpg",
-        alt: "Execution Idea",
-        aspect: "landscape",
-      },
-      {
-        src: "/experience/beyond/07-hue-wonderview-fest-2026.jpg",
-        alt: "Hue Wonderview Fest 2026",
-        aspect: "landscape",
-      },
-      {
-        src: "/experience/beyond/08-dawave.jpg",
-        alt: "DAWAVE — HOZO International Music Festival",
-        aspect: "landscape",
-      },
-      {
-        src: "/experience/beyond/09-vietnam-jazz-heritage-festival.jpg",
-        alt: "Vietnam Jazz Heritage Festival 2026 — Haus Da Lat x Beyond Communication",
-        aspect: "landscape",
-      },
-    ],
+    gallery: [],
   },
 ];
 
