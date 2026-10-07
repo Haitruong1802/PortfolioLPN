@@ -1038,24 +1038,56 @@ function SintechShowcase({
       {/* Header — hero portrait (if any) + step/title/role/context */}
       {exp.hero ? (
         <header className="mb-14 grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:items-start">
-          <button
-            type="button"
-            onClick={() => onZoom(exp.hero as ExpImage)}
-            className="group relative block aspect-square overflow-hidden rounded-2xl border border-border bg-card transition-colors hover:border-foreground/20"
-            aria-label={`Zoom ${exp.hero.alt}`}
+          <ImageGlow
+            accent={accent.includes("orange") ? "orange" : "blue"}
+            intensity={0.4}
           >
-            <Image
-              src={exp.hero.src}
-              alt={exp.hero.alt}
-              fill
-              sizes="(max-width: 768px) 100vw, 33vw"
-              className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-              priority={false}
-            />
-            <div className="pointer-events-none absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-black/60 text-white opacity-0 backdrop-blur transition-opacity duration-200 group-hover:opacity-100">
-              <Eye className="h-4 w-4" />
-            </div>
-          </button>
+            <Tilt max={10} glare className="rounded-[1.5rem]">
+              <ImageReveal
+                direction="up"
+                rounded="1.5rem"
+                className="relative aspect-[3/4] overflow-hidden border border-border bg-card shadow-2xl"
+              >
+                <button
+                  type="button"
+                  onClick={() => onZoom(exp.hero as ExpImage)}
+                  className="group absolute inset-0 block w-full"
+                  aria-label={`Open ${exp.hero.alt}`}
+                >
+                  <Image
+                    src={exp.hero.src}
+                    alt={exp.hero.alt}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 30vw"
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/15 to-transparent" />
+                  <span className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-black/60 text-white backdrop-blur transition-transform group-hover:scale-110">
+                    <Eye className="h-4 w-4" />
+                  </span>
+                  <div className="absolute inset-x-5 bottom-5">
+                    <p
+                      className={cn(
+                        "mb-1.5 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em]",
+                        accent,
+                      )}
+                    >
+                      <span
+                        className={cn(
+                          "h-1.5 w-1.5 rounded-full",
+                          accent.replace("text-", "bg-"),
+                        )}
+                      />
+                      {exp.shortOrg}
+                    </p>
+                    <p className="font-display text-sm font-semibold text-white md:text-base">
+                      {exp.role[locale]}
+                    </p>
+                  </div>
+                </button>
+              </ImageReveal>
+            </Tilt>
+          </ImageGlow>
           <div className="min-w-0">
             <div className="flex items-baseline gap-5">
               <span
@@ -1384,7 +1416,7 @@ function ImageZoomModal({
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.96, opacity: 0 }}
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="relative flex w-full max-w-5xl flex-col items-center"
+          className="relative flex w-full max-w-[95vw] flex-col items-center"
           onClick={(e) => e.stopPropagation()}
         >
           <TransformWrapper
