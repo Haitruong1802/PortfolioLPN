@@ -989,11 +989,11 @@ const BEYOND_TASKS: SintechTask[] = [
     num: "04",
     vi: {
       title: "Talent & Backstage Operations",
-      desc: "Tham gia vận hành backstage tại Starbucks Presents 2026 - The Siren World, quản lý các đầu việc liên quan đến nghệ sĩ và khu vực hậu trường theo phân công. Phối hợp thông tin với các bên liên quan, theo dõi tình trạng đầu việc và hỗ trợ duy trì luồng vận hành backstage trong suốt chương trình.",
+      desc: "Tham gia vận hành backstage tại Starbucks Presents 2026 - The Siren World, quản lý các đầu việc liên quan đến nghệ sĩ và khu vực hậu trường theo phân công. Phối hợp thông tin với các bên liên quan và hỗ trợ duy trì luồng vận hành backstage trong suốt chương trình.",
     },
     en: {
       title: "Talent & Backstage Operations",
-      desc: "Operated backstage at Starbucks Presents 2026 - The Siren World, managing talent and backstage tasks per assignment. Coordinated information across stakeholders, tracked task status, and helped sustain backstage flow throughout the show.",
+      desc: "Operated backstage at Starbucks Presents 2026 - The Siren World, managing talent and backstage tasks per assignment. Coordinated information across stakeholders and helped sustain backstage flow throughout the show.",
     },
     images: [
       {
