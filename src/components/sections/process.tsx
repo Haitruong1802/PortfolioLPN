@@ -1001,7 +1001,7 @@ const BEYOND_TASKS: SintechTask[] = [
         alt: "Sân khấu chính Starbucks Presents 2026 — The Siren World · 218 Dance Crew · Son Mạch & Đàn Nhạc TUSO",
       },
     ],
-    imgAspect: "aspect-[4/3]",
+    imgAspect: "aspect-[2/1]",
     cols: 1,
   },
 ];
