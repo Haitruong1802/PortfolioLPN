@@ -86,6 +86,7 @@ export function Process() {
                 accent={stepAccent[i]}
                 onZoom={setZoom}
                 tasks={BEYOND_TASKS}
+                showGallery
               />
             );
           }
@@ -998,12 +999,14 @@ function SintechShowcase({
   accent,
   onZoom,
   tasks,
+  showGallery = false,
 }: {
   exp: ExperienceItem;
   index: number;
   accent: string;
   onZoom: (img: ExpImage) => void;
   tasks: SintechTask[];
+  showGallery?: boolean;
 }) {
   const { locale } = useLocale();
 
@@ -1064,6 +1067,50 @@ function SintechShowcase({
           />
         ))}
       </div>
+
+      {showGallery && exp.gallery.length > 0 && (
+        <section className="mt-16">
+          <p
+            className={cn(
+              "mb-5 font-mono text-[10px] uppercase tracking-[0.22em]",
+              accent,
+            )}
+          >
+            ▸ {locale === "vi" ? "Dự án đã tham gia" : "Projects"} ·{" "}
+            {String(exp.gallery.length).padStart(2, "0")}
+          </p>
+          <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            {exp.gallery.map((img, i) => (
+              <motion.button
+                key={img.src}
+                type="button"
+                onClick={() => onZoom(img)}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{
+                  duration: 0.5,
+                  delay: Math.min(i * 0.05, 0.3),
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="group relative block aspect-[3/4] overflow-hidden rounded-lg border border-border bg-card transition-colors hover:border-foreground/20"
+                aria-label={`Zoom ${img.alt}`}
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+                <div className="pointer-events-none absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full bg-black/60 text-white opacity-0 backdrop-blur transition-opacity duration-200 group-hover:opacity-100">
+                  <Eye className="h-3 w-3" />
+                </div>
+              </motion.button>
+            ))}
+          </div>
+        </section>
+      )}
     </motion.li>
   );
 }
