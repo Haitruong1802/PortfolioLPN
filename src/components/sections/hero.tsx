@@ -8,6 +8,7 @@ import { useLocale } from "@/lib/i18n/provider";
 import { profile } from "@/lib/content/profile";
 import { GlitchText } from "@/components/animations/glitch-text";
 import { TypingText } from "@/components/animations/typing-text";
+import TechText from "@/components/animations/TechText";
 import { useAnimationProfile } from "@/lib/hooks/use-animation-profile";
 
 // 6 sparkles scattered around the portrait silhouette.
@@ -206,40 +207,100 @@ export function Hero() {
         <div className="lg:max-w-[60%]">
           {/* Typography only, no grid */}
           <div className="min-w-0">
-            {/* GO BIG / OR / GO HOME */}
-            <h1 className="font-display font-extrabold leading-[0.92] tracking-tight">
-              <motion.span
-                initial={{ opacity: 0, x: -40, filter: "blur(8px)" }}
-                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                className="block whitespace-nowrap text-go-big"
-                style={{ fontSize: "clamp(2.75rem, 10vw, 8rem)" }}
+            {/* GO BIG / OR / GO HOME — TechText canvas on full/balanced, plain text on lite (máy yếu) */}
+            {lite ? (
+              <h1 className="font-display font-extrabold leading-[0.92] tracking-tight">
+                <span
+                  className="block whitespace-nowrap text-go-big"
+                  style={{ fontSize: "clamp(2.75rem, 10vw, 8rem)" }}
+                >
+                  GO BIG
+                </span>
+                <span
+                  className="block whitespace-nowrap text-go-or my-1"
+                  style={{ fontSize: "clamp(1.5rem, 5vw, 4rem)" }}
+                >
+                  OR
+                </span>
+                <span
+                  className="block whitespace-nowrap text-go-home"
+                  style={{ fontSize: "clamp(2.75rem, 10vw, 8rem)" }}
+                >
+                  GO HOME.
+                </span>
+              </h1>
+            ) : (
+              <div
+                className="font-display font-extrabold leading-[0.92] tracking-tight"
+                role="heading"
+                aria-level={1}
+                aria-label="GO BIG OR GO HOME."
               >
-                <GlitchText>GO BIG</GlitchText>
-              </motion.span>
-              <motion.span
-                initial={{ opacity: 0, scale: 0.6, filter: "blur(8px)" }}
-                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                transition={{
-                  duration: 0.6,
-                  delay: 0.45,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="block whitespace-nowrap text-go-or my-1"
-                style={{ fontSize: "clamp(1.5rem, 5vw, 4rem)" }}
-              >
-                OR
-              </motion.span>
-              <motion.span
-                initial={{ opacity: 0, x: 40, filter: "blur(8px)" }}
-                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                transition={{ duration: 0.9, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
-                className="block whitespace-nowrap text-go-home"
-                style={{ fontSize: "clamp(2.75rem, 10vw, 8rem)" }}
-              >
-                <GlitchText>GO HOME.</GlitchText>
-              </motion.span>
-            </h1>
+                <motion.div
+                  initial={{ opacity: 0, x: -40, filter: "blur(8px)" }}
+                  animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                  transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                  className="block w-full text-go-big"
+                  style={{ height: "clamp(3.3rem, 12vw, 9.5rem)" }}
+                >
+                  <TechText
+                    text="GO BIG"
+                    fontWeight={800}
+                    fontSize={220}
+                    letterSpacing={-0.04}
+                    align="left"
+                    labels={false}
+                    guides={false}
+                    specks={balanced ? 4 : 10}
+                    bounce={0.5}
+                    reach={180}
+                    sweep={!balanced}
+                  />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.6, filter: "blur(8px)" }}
+                  animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                  transition={{ duration: 0.6, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                  className="block w-full text-go-or my-1"
+                  style={{ height: "clamp(1.8rem, 6vw, 4.5rem)" }}
+                >
+                  <TechText
+                    text="OR"
+                    fontWeight={800}
+                    fontSize={110}
+                    letterSpacing={-0.02}
+                    align="left"
+                    labels={false}
+                    guides={false}
+                    specks={balanced ? 2 : 6}
+                    bounce={0.5}
+                    reach={120}
+                    sweep={!balanced}
+                  />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, x: 40, filter: "blur(8px)" }}
+                  animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                  transition={{ duration: 0.9, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
+                  className="block w-full text-go-home"
+                  style={{ height: "clamp(3.3rem, 12vw, 9.5rem)" }}
+                >
+                  <TechText
+                    text="GO HOME."
+                    fontWeight={800}
+                    fontSize={220}
+                    letterSpacing={-0.04}
+                    align="left"
+                    labels={false}
+                    guides={false}
+                    specks={balanced ? 4 : 10}
+                    bounce={0.5}
+                    reach={180}
+                    sweep={!balanced}
+                  />
+                </motion.div>
+              </div>
+            )}
 
             {/* Tiêu đề định vị: Lê Phương Nam — Account Executive */}
             <motion.p

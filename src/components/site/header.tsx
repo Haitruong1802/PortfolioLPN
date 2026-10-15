@@ -12,6 +12,7 @@ import { MusicToggle } from "./music-toggle";
 import { MobileMenu } from "./mobile-menu";
 import { Magnetic } from "@/components/animations/magnetic";
 import { cn } from "@/lib/utils";
+import GooeyNav from "@/components/animations/GooeyNav";
 
 export function Header() {
   const { t } = useLocale();
@@ -66,18 +67,18 @@ export function Header() {
           <span className="hidden sm:inline">Lê Phương Nam</span>
         </a>
 
-        <nav className="hidden items-center gap-1 md:flex">
-          {links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className={cn(
-                "rounded-full px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-              )}
-            >
-              {link.label}
-            </a>
-          ))}
+        <nav className="hidden md:block">
+          <GooeyNav
+            items={links.map((l) => ({ label: l.label, href: l.href }))}
+            theme="dark"
+            size="sm"
+            frame={false}
+            particleCount={14}
+            animationTime={550}
+            spread={48}
+            gooeyness={0.55}
+            colors={["#ff7a1a", "#2f7dff"]}
+          />
         </nav>
 
         <div className="flex items-center gap-2">

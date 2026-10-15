@@ -54,8 +54,9 @@ function detectProfile(): AnimationProfile {
   const cores = nav.hardwareConcurrency ?? 8;
   const memory = nav.deviceMemory ?? 8;
 
-  // Very weak hardware -> lite
-  if (cores <= 2 || memory <= 2) return "lite";
+  // Weak hardware -> lite (includes Core i3 class laptops with no dedicated GPU:
+  // 4 logical cores + 4-8GB RAM commonly report cores=4, memory=4).
+  if (cores <= 4 || memory <= 4) return "lite";
 
   // "full" goes to desktops that can drive the sticky-scroll studio +
   // the heavy cinema choreography: >= 8 logical cores AND >= 8 GB RAM,
